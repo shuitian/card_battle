@@ -11,7 +11,8 @@ class LogThread(threading.Thread):
 	"""日志线程"""
 	def __init__(self):
 		super(LogThread, self).__init__()
-		self.log_handle = open(os.path.join(log_path, time.strftime("%Y%m%d") + '.log'), 'w')
+		self.log_file_name = os.path.join(log_path, time.strftime("%Y%m%d") + '.log')
+		with open(self.log_file_name, 'w'):pass
 
 	def run(self):
 		while True:
@@ -20,8 +21,8 @@ class LogThread(threading.Thread):
 
 			log_data = log_list.pop(0)
 			log_text = time.strftime("%Y-%m-%d %H:%M:%S") + ' - %s - %s - %s\n'%(log_data)
-			self.log_handle.write(log_text)
-			self.log_handle.flush()
+			with open(self.log_file_name, 'a') as f:
+				f.write(log_text)
 
 class MyLog(object):
 	"""docstring for MyLog"""

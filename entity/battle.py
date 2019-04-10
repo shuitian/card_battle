@@ -13,6 +13,10 @@ class Battle(base_entity.BaseEntity):
 		self.battle_mgr = battle_mgr
 		self.battle_id = battle_id
 		self.battle_info = battle_info
+
+		self.init()
+
+	def init(self):
 		self.is_start = False
 		self.is_finish = False
 
@@ -21,7 +25,6 @@ class Battle(base_entity.BaseEntity):
 
 	def run(self):
 		self.logger.info('Battle run!')
-		self.finish({})
 
 	def finish(self, result):
 		self.logger.info('Battle finish!')
