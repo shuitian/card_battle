@@ -1,9 +1,9 @@
 # -*- coding:utf-8 -*-
 
+import battle
 import gworld
 import threading
 import base_entity
-from battle import battle
 
 class BattleThread(threading.Thread):
 	"""战斗管理器线程"""
