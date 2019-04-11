@@ -2,6 +2,7 @@
 
 import const
 import random
+import battle_common
 
 class DamageLogic(object):
 	"""伤害相关代码"""
@@ -9,10 +10,19 @@ class DamageLogic(object):
 	def damage(self, user, effect, target, execute_argv):
 		rate = float(execute_argv.get('rate', 1.0))
 		effect_base = execute_argv.get('effect_base', 'atk')
-		_damage = user.get_attr(effect_base) * 1000.0/(1000 + target.get_attr("defence"))
-		target.sub_attr('hp', _damage)
+		damage_struct = battle_common.DamageStruct(user, target, user.get_attr(effect_base))
+		# damage_struct.set_rate('defence', 1000.0/(1000 + target.get_attr("defence")))
+		target.sub_attr('hp', damage_struct.get_real_value())
+		self.on_damage(damage_struct)
+		if target.get_attr('hp') <= 0:
+			self.make_entity_die(user, target)
 
-		self.on_damage(user, target, _damage)
+	def on_damage(self, damage_struct):
+		pass
 
-	def on_damage(self, user, target, _damage):
+	def make_entity_die(self, killer, dead):
+		dead.dead = True
+		self.on_entity_die(killer, dead)
+
+	def on_entity_die(self, killer, dead):
 		pass

@@ -3,45 +3,51 @@
 import data
 import const
 import random
+import battle_common
 
 class SkillLogic(object):
 	"""技能相关代码"""
 
-	def use_skill(self, user, skill):
-		r = random.random()
-		if r >= skill.trigger_prob:
+	def use_skill(self, user, skill_id):
+		skill_struct = battle_common.SkillStruct(user, skill_id)
+		if skill_struct.is_miss():
 			return
+		
+		self.on_before_use_skill(skill_struct)
+		self.real_use_skill(skill_struct)
+		self.one_after_use_skill(skill_struct)
 
-		self.real_use_skill(user, skill)
+	def on_before_use_skill(self, skill_struct):
+		pass
 	
-	def real_use_skill(self, user, skill):
-		effect_list = skill.skill_effect_list
+	def real_use_skill(self, skill_struct):
+		effect_list = skill_struct.skill.skill_effect_list
 		if not effect_list:
 			return
 		for effect_id in effect_list:
-			self.calc_one_skill_effect(user, effect_id)
+			effect_struct = battle_common.EffectStruct(skill_struct.user, skill_struct.skill_id, effect_id)
+			self.calc_one_skill_effect(effect_struct)
 
-	def calc_one_skill_effect(self, user, effect_id):
-		effect = data.skill_effect[effect_id]
+	def one_after_use_skill(self, skill_struct):
+		pass
 
-		execute_infos = effect.execute_infos
-		if not execute_infos:
+	def calc_one_skill_effect(self, effect_struct):
+		user = effect_struct.user
+		effect = effect_struct.effect
+		execute_info = effect.execute_info
+		if not execute_info:
 			return
 
-		for execute_info in execute_infos:
-			self.calc_one_execute_info(user, effect, execute_info)
-	
-	def calc_one_execute_info(self, user, effect, execute_info):
 		targets = self.get_skill_target(user, effect, execute_info)
-		for target in targets:
+		effect_struct.set_targets(targets)
+		for target in effect_struct.targets:
 			self.calc_one_target_effect(user, effect, target, execute_info)
 
 	def get_skill_target(self, user, effect, execute_info):
-		print '         execute_info',execute_info
 		execute_type, target_func, execute_argv = execute_info
 		distance = float(execute_argv.get('distance', 1))
 		targets = []
-		for target in self.entity_infos.itervalues():
+		for target in self.iter_undead_entity_infos():
 			func = getattr(user, target_func)
 			if not func(target):
 				continue
@@ -60,7 +66,15 @@ class SkillLogic(object):
 		return random.sample(targets, target_num)
 	
 	def calc_distance(self, user, target):
-		return abs(user.get_attr('pos') - target.get_attr('pos'))
+		pos_1 = user.get_attr('pos')
+		pos_2 = target.get_attr('pos')
+		if pos_1 > pos_2:
+			pos_1, pos_2 = pos_2, pos_1
+
+		dis = 1
+		for pos in xrange(pos_1+1, pos_2):
+			dis += not self.get_entity_by_pos(pos).dead
+		return dis
 
 	def calc_one_target_effect(self, user, effect, target, execute_info):
 		execute_type, target_func, execute_argv = execute_info

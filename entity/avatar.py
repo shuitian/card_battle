@@ -18,6 +18,7 @@ class AvatarInfo(base_entity.BaseEntity):
 		self.role_id = self.attrs.get('role_id')
 		self.role_info = data.role_info[self.role_id]
 		self.level = self.attrs.get('level', 1)
+		self.dead = False
 		self.init()
 
 	def init(self):

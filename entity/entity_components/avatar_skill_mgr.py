@@ -37,8 +37,8 @@ class AvatarSkillMgr(object):
 		self.skills[skill_id] = _skill
 
 	def do_action(self, current_round):
-		for skill in self.skills.itervalues():
-			self.battle.use_skill(self, skill)
+		for skill_id in self.skills.iterkeys():
+			self.battle.use_skill(self, skill_id)
 
 	def get_skill(self, skill_id):
 		return self.skills.get(skill_id, None)
