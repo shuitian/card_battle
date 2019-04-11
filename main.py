@@ -6,14 +6,28 @@ def init():
 	setup.setup()
 
 def test():
-	_battle = gworld.battle_mgr.new_battle({})
+	import data
+	import random
+	from utils import utils
+
+	battle_info = {}
+	entity_infos = {}
+	for x in xrange(6):
+		role_id = random.choice(data.role_info.keys())
+		level = random.randrange(1,10)
+
+		entity_info = utils.create_role(role_id, level)
+		entity_info['eid'] = x
+		entity_info['pos'] = x
+		
+		entity_infos[x] = entity_info
+
+	battle_info['entity_infos'] = entity_infos
+	_battle = gworld.battle_mgr.new_battle(battle_info)
 	gworld.battle_mgr.start_battle(_battle.battle_id)
 
 if __name__ == '__main__':
 	init()
-	test()
-	test()
-	test()
 	test()
 
 	while True:

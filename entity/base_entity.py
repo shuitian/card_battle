@@ -8,6 +8,7 @@ class BaseEntity(object):
 		super(BaseEntity, self).__init__()
 		self.logger = LogManager.get_logger(self.__class__.__name__)
 		
-
+	def destroy(self):
+		pass
 	
 		

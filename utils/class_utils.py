@@ -14,8 +14,10 @@ def _add_component(klass, component, funcs):
 			
 def gen_sequence_function(funcs):
 	def _wrapper(*args, **kwds):
+		value = None
 		for f in funcs:
-			f(*args, **kwds)
+			value = f(*args, **kwds)
+		return value
 
 	return _wrapper
 
