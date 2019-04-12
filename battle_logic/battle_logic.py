@@ -54,3 +54,9 @@ class BattleLogic(object):
 
 	def on_end_battle(self):
 		pass
+
+	def on_start_action(self, avatar, current_round):
+		pass
+
+	def on_pass_action(self, avatar, current_round):
+		pass

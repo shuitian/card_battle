@@ -46,7 +46,7 @@ class AvatarInfo(base_entity.BaseEntity):
 		_data = self.attr_modifiers.get(name, {})
 		for change_value in _data.itervalues():
 			base_value += change_value
-		return base_value
+		return max(base_value, 0)
 
 	def sub_attr(self, name, value):
 		self.set_attr(name, max(self.get_attr(name) - value,0))
@@ -56,9 +56,14 @@ class AvatarInfo(base_entity.BaseEntity):
 
 	def action(self, current_round):
 		self.action_round = current_round
+		self.on_start_action(current_round)
+		self.battle.on_start_action(self, current_round)
 		self.do_action(current_round)
 		self.battle.on_action(self, current_round)
 		self.on_action(current_round)
+
+	def on_start_action(self, current_round):
+		pass
 
 	def do_action(self, current_round):
 		pass

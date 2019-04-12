@@ -22,8 +22,8 @@ class Record(object):
 
 
 data = {
-	1001:Record(1001,'normal',3,'is_enemy',1,(('damage',{'rate':'1'}),(None,{}))),
-	2001:Record(2001,'grass',3,'is_enemy',1,(('damage',{'rate':'1'}),('add_buff',{'base_value':'30','buff_id':'201','rate':'1','turn':'1'}))),
-	3001:Record(3001,'fire',3,'is_enemy',1,(('damage',{'rate':'1'}),('add_buff',{'base_value':'30','buff_id':'202','rate':'1','turn':'1'}))),
-	4001:Record(4001,'water',3,'is_enemy',1,(('damage',{'rate':'1'}),('add_buff',{'base_value':'30','buff_id':'203','rate':'1','turn':'1'})))
+	1001:Record(1001,'normal',3,'is_enemy',1,(('damage',{'rate':'0.5'}),(None,{}),(None,{}))),
+	2001:Record(2001,'grass',3,'is_enemy',1,(('damage',{'rate':'1'}),('add_buff',{'base_value':'30','buff_id':'202','turn':'2'}),(None,{}))),
+	3001:Record(3001,'fire',3,'is_enemy',1,(('damage',{'rate':'1'}),(None,{}),(None,{}))),
+	4001:Record(4001,'water',3,'is_enemy',1,(('damage',{'rate':'0.5'}),('add_buff',{'base_value':'20','buff_id':'203','turn':'1'}),('add_buff',{'base_value':'10','buff_id':'202','turn':'2'})))
 }

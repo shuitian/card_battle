@@ -79,15 +79,30 @@ class BattleReport(object):
 		self.report_data += u'\t【%s】无法再战\n'%(dead.eid)
 
 	def on_add_buff_failed(self, target, buff_obj):
-		self.report_data += u'\t【%s】已存在%s效果\n'%(target.eid, target.get_buff_desc(buff_obj))
+		self.report_data += u'\t【%s】已存在%s效果\n'%(target.eid, target.get_buff_exist_desc(buff_obj))
 
 	def on_add_buff(self, target, buff_obj):
-		self.report_data += u'\t【%s】获得【%s】\n'%(target.eid, buff_obj.buff_data.name)
-		self.report_data += u'\t\t【%s】%s\n'%(target.eid, target.get_buff_desc(buff_obj))
+		add_desc = target.get_buff_add_desc(buff_obj)
+		if not add_desc:
+			add_desc = u'获得【%s】'%(buff_obj.buff_data.name)
+		if add_desc:
+			self.report_data += u'\t【%s】%s\n'%(target.eid, add_desc)
+		desc = target.get_buff_desc(buff_obj)
+		if desc:
+			self.report_data += u'\t\t【%s】%s\n'%(target.eid, desc)
 
 	def on_refresh_buff(self, target, buff_obj):
 		self.report_data += u'\t【%s】刷新了【%s】\n'%(target.eid, buff_obj.buff_data.name)
-		self.report_data += u'\t\t【%s】%s\n'%(target.eid, target.get_buff_desc(buff_obj))
+		desc = target.get_buff_desc(buff_obj)
+		if desc:
+			self.report_data += u'\t\t【%s】%s\n'%(target.eid, desc)
 
 	def on_remove_buff(self, target, buff_obj):
-		self.report_data += u'【%s】的【%s】效果消失了\n'%(target.eid, buff_obj.buff_data.name)
+		self.report_data += u'【%s】来自【%s】的【%s】效果消失了\n'%(target.eid, buff_obj.eid, buff_obj.buff_data.name)
+
+	def on_pass_action(self, avatar, current_round):
+		self.report_data += u'【%s】无法行动\n'%(avatar.eid)
+
+	def on_start_action(self, avatar, current_round):
+		if avatar.have_state('charm'):
+			self.report_data += u'【%s】不分敌我目标\n'%(avatar.eid)	

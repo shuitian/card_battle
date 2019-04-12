@@ -53,9 +53,10 @@ class SkillLogic(object):
 		distance = effect.distance
 		targets = []
 		for target in self.iter_undead_entity_infos():
-			func = getattr(user, target_func)
-			if not func(target):
-				continue
+			if not user.have_state('charm'):
+				func = getattr(user, target_func)
+				if not func(target):
+					continue
 			dis = self.calc_distance(user, target)
 			if dis > distance:
 				continue

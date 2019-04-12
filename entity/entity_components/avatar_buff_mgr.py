@@ -40,6 +40,7 @@ class AvatarBuffMgr(object):
 	
 	def init(self):
 		self.buffs =  {} # buff_id : buff_obj
+		self.states = {} # control_name : [buff_obj,]
 
 	def iter_buff_obj(self):
 		for buff_obj in self.buffs.itervalues():
@@ -107,11 +108,32 @@ class AvatarBuffMgr(object):
 			self.set_attr_modifier(attr, buff_obj, -value)
 
 	def special_effect_add_control(self, buff_obj):
-		pass
+		special_effect_args = buff_obj.buff_data.special_effect_args
+		effect_name = special_effect_args.get('effect', None)
+		self.states.setdefault(effect_name, []).append(buff_obj)
+
+	def get_buff_exist_desc(self, buff_obj):
+		return self._get_buff_desc(buff_obj, buff_obj.buff_data.exist_desc)
+
+	def get_buff_add_desc(self, buff_obj):
+		return self._get_buff_desc(buff_obj, buff_obj.buff_data.add_desc)
 
 	def get_buff_desc(self, buff_obj):
-		desc = buff_obj.buff_data.desc
-		return desc.replace('$value$', str(self.get_buff_value(buff_obj)[1]))
+		return self._get_buff_desc(buff_obj, buff_obj.buff_data.desc)
+
+	def _get_buff_desc(self, buff_obj, desc):
+		if not desc:
+			return desc
+
+		desc = desc.replace('$value$', str(self.get_buff_value(buff_obj)[1]))
+		attr_dict = {
+			u'$攻击':'atk',
+			u'$防御':'defence',
+			u'$速度':'speed',
+		}
+		for text, attr in attr_dict.iteritems():
+			desc = desc.replace(text, str(self.get_attr(attr)))
+		return desc
 
 	def on_action(self, current_round):
 		self.battle.reduce_buff_turn(self, 1)
@@ -124,3 +146,10 @@ class AvatarBuffMgr(object):
 		attr = special_effect_args.get('attr', None)
 		if attr:
 			self.remove_attr_modifier(attr, buff_obj)
+
+		effect_name = special_effect_args.get('effect', None)
+		if effect_name and effect_name in self.states:
+			self.states[effect_name].remove(buff_obj)
+
+	def have_state(self, state_name):
+		return self.states.get(state_name, None)
