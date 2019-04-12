@@ -12,9 +12,11 @@ def test():
 
 	battle_info = {}
 	entity_infos = {}
+	key_data = (1,5,9,3,8,4)
 	for x in xrange(6):
 		role_id = random.choice(data.role_info.keys())
-		level = random.randrange(1,10)
+		level = random.randrange(100,101)
+		role_id = key_data[x]
 
 		entity_info = utils.create_role(role_id, level)
 		entity_info['eid'] = x

@@ -34,18 +34,23 @@ class SkillLogic(object):
 	def calc_one_skill_effect(self, effect_struct):
 		user = effect_struct.user
 		effect = effect_struct.effect
-		execute_info = effect.execute_info
-		if not execute_info:
+		execute_infos = effect.execute_infos
+		if not execute_infos:
 			return
 
-		targets = self.get_skill_target(user, effect, execute_info)
+		targets = self.get_skill_target(user, effect)
 		effect_struct.set_targets(targets)
-		for target in effect_struct.targets:
-			self.calc_one_target_effect(user, effect, target, execute_info)
 
-	def get_skill_target(self, user, effect, execute_info):
-		execute_type, target_func, execute_argv = execute_info
-		distance = float(execute_argv.get('distance', 1))
+		for execute_info in execute_infos:
+			for target in effect_struct.targets:
+				if target.dead:
+					continue
+				self.calc_one_target_effect(user, effect, target, execute_info)
+
+	def get_skill_target(self, user, effect):
+		target_func = effect.target_func
+		target_num = max(effect.target_num,1)
+		distance = effect.distance
 		targets = []
 		for target in self.iter_undead_entity_infos():
 			func = getattr(user, target_func)
@@ -59,8 +64,7 @@ class SkillLogic(object):
 		if not targets:
 			return targets
 
-		target_num = int(execute_argv.get('target_num', 1))
-		if not target_num or target_num >= len(targets):
+		if target_num >= len(targets):
 			return targets
 
 		return random.sample(targets, target_num)
@@ -77,6 +81,8 @@ class SkillLogic(object):
 		return dis
 
 	def calc_one_target_effect(self, user, effect, target, execute_info):
-		execute_type, target_func, execute_argv = execute_info
-		func = getattr(self, execute_type)
+		execute_type, execute_argv = execute_info
+		if not execute_type:
+			return
+		func = getattr(self, 'execute_type_%s'%execute_type)
 		func(user, effect, target, execute_argv)

@@ -19,13 +19,34 @@ class AvatarInfo(base_entity.BaseEntity):
 		self.role_info = data.role_info[self.role_id]
 		self.level = self.attrs.get('level', 1)
 		self.dead = False
+
+		self.attr_modifiers = {} # {'atk':{m_type:v1}}
 		self.init()
 
 	def init(self):
 		pass
 
+	def set_attr_modifier(self, name, m_type, value):
+		_data = self.attr_modifiers.setdefault(name, {})
+		_data[m_type] = value
+
+	def remove_attr_modifier(self, name, m_type):
+		if name not in self.attr_modifiers:
+			return
+
+		_data = self.attr_modifiers[name]
+		if m_type in _data:
+			del _data[m_type]
+
+		if not self.attr_modifiers[name]:
+			del self.attr_modifiers[name]
+
 	def get_attr(self, name):
-		return self.attrs.get(name, None)
+		base_value = self.attrs[name]
+		_data = self.attr_modifiers.get(name, {})
+		for change_value in _data.itervalues():
+			base_value += change_value
+		return base_value
 
 	def sub_attr(self, name, value):
 		self.set_attr(name, max(self.get_attr(name) - value,0))
@@ -37,8 +58,12 @@ class AvatarInfo(base_entity.BaseEntity):
 		self.action_round = current_round
 		self.do_action(current_round)
 		self.battle.on_action(self, current_round)
+		self.on_action(current_round)
 
 	def do_action(self, current_round):
+		pass
+
+	def on_action(self, current_round):
 		pass
 
 	def destroy(self):

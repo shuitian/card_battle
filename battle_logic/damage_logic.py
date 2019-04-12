@@ -8,7 +8,7 @@ import battle_common
 class DamageLogic(object):
 	"""伤害相关代码"""
 
-	def damage(self, user, effect, target, execute_argv):
+	def execute_type_damage(self, user, effect, target, execute_argv):
 		rate = float(execute_argv.get('rate', 1.0))
 		effect_base = execute_argv.get('effect_base', 'atk')
 		damage_struct = battle_common.DamageStruct(user, target, user.get_attr(effect_base))

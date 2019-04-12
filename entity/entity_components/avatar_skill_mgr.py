@@ -38,6 +38,8 @@ class AvatarSkillMgr(object):
 
 	def do_action(self, current_round):
 		for skill_id in self.skills.iterkeys():
+			if self.battle.is_finish:
+				continue
 			self.battle.use_skill(self, skill_id)
 
 	def get_skill(self, skill_id):
