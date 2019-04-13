@@ -21,3 +21,6 @@ class AvatarCamp(object):
 
 	def is_camp_all(self, info):
 		return True
+
+	def is_self(self, info):
+		return self.eid == info.eid

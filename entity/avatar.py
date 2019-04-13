@@ -51,24 +51,17 @@ class AvatarInfo(base_entity.BaseEntity):
 	def sub_attr(self, name, value):
 		self.set_attr(name, max(self.get_attr(name) - value,0))
 
+	def add_attr(self, name, value):
+		self.set_attr(name, self.get_attr(name) + value)
+
 	def set_attr(self, name, value):
 		self.attrs[name] = value
 
 	def action(self, current_round):
 		self.action_round = current_round
-		self.on_start_action(current_round)
-		self.battle.on_start_action(self, current_round)
 		self.do_action(current_round)
-		self.battle.on_action(self, current_round)
-		self.on_action(current_round)
-
-	def on_start_action(self, current_round):
-		pass
 
 	def do_action(self, current_round):
-		pass
-
-	def on_action(self, current_round):
 		pass
 
 	def destroy(self):

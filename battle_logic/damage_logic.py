@@ -11,7 +11,7 @@ class DamageLogic(object):
 	def execute_type_damage(self, user, effect, target, execute_argv):
 		rate = float(execute_argv.get('rate', 1.0))
 		effect_base = execute_argv.get('effect_base', 'atk')
-		damage_struct = battle_common.DamageStruct(user, target, user.get_attr(effect_base))
+		damage_struct = battle_common.DamageStruct(user, target, user.get_attr(effect_base) * rate)
 		
 		damage_struct.set_rate('defence', 1000.0/(1000 + target.get_attr("defence")))
 		damage_struct.set_rate('attribute', self.get_attribute_rate(user, target, effect))
@@ -21,7 +21,21 @@ class DamageLogic(object):
 		if target.get_attr('hp') <= 0:
 			self.make_entity_die(user, target)
 
+	def execute_type_cure(self, user, effect, target, execute_argv):
+		rate = float(execute_argv.get('rate', 1.0))
+		effect_base = execute_argv.get('effect_base', 'atk')
+		cure_struct = battle_common.CureStruct(user, target, user.get_attr(effect_base) * rate)
+		
+		# cure_struct.set_rate('defence', 1000.0/(1000 + target.get_attr("defence")))
+		# cure_struct.set_rate('attribute', self.get_attribute_rate(user, target, effect))
+
+		target.add_attr('hp', cure_struct.get_real_value())
+		self.on_cure(cure_struct)
+
 	def on_damage(self, damage_struct):
+		pass
+
+	def on_cure(self, cure_struct):
 		pass
 
 	def make_entity_die(self, killer, dead):

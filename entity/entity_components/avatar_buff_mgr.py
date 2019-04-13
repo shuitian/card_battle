@@ -135,10 +135,6 @@ class AvatarBuffMgr(object):
 			desc = desc.replace(text, str(self.get_attr(attr)))
 		return desc
 
-	def on_action(self, current_round):
-		self.battle.reduce_buff_turn(self, 1)
-		# 减少回合数
-
 	def del_buff(self, buff_id):
 		buff_obj = self.buffs.pop(buff_id)
 

@@ -10,17 +10,47 @@ class SkillLogic(object):
 
 	def use_skill(self, user, skill_id):
 		skill_struct = battle_common.SkillStruct(user, skill_id)
+		# 如果技能需要准备
+		skill = skill_struct.skill
+		if skill.prepare_round > 0:
+			self.use_prepare_skill(skill_struct)
+			return
+
 		if skill_struct.is_miss():
 			return
-		
-		self.on_before_use_skill(skill_struct)
+
 		self.real_use_skill(skill_struct)
 		self.one_after_use_skill(skill_struct)
 
-	def on_before_use_skill(self, skill_struct):
+	def use_prepare_skill(self, skill_struct):
+		skill = skill_struct.skill
+		if skill.left_round == 0:
+			if not skill_struct.is_miss():
+				self.start_preapre(skill_struct)
+			return
+
+		skill.left_round -= 1
+		if skill.left_round == 0:
+			self.real_use_skill(skill_struct)
+			self.one_after_use_skill(skill_struct)
+		else:
+			self.continue_preapre(skill_struct)
+
+	def start_preapre(self, skill_struct):
+		skill_struct.skill.left_round = skill_struct.skill.prepare_round
+		self.on_prepare_skill(skill_struct)
+
+	def continue_preapre(self, skill_struct):
+		self.on_continue_preapre(skill_struct)
+
+	def on_prepare_skill(self, skill_struct):
+		pass
+
+	def on_before_real_use_skill(self, skill_struct):
 		pass
 	
 	def real_use_skill(self, skill_struct):
+		self.on_before_real_use_skill(skill_struct)
 		effect_list = skill_struct.skill.skill_effect_list
 		if not effect_list:
 			return
@@ -41,11 +71,18 @@ class SkillLogic(object):
 		targets = self.get_skill_target(user, effect)
 		effect_struct.set_targets(targets)
 
+		if not targets:
+			self.on_not_exist_targets(effect_struct)
+			return
+
 		for execute_info in execute_infos:
 			for target in effect_struct.targets:
 				if target.dead:
 					continue
 				self.calc_one_target_effect(user, effect, target, execute_info)
+
+	def on_not_exist_targets(self, effect_struct):
+		pass
 
 	def get_skill_target(self, user, effect):
 		target_func = effect.target_func

@@ -33,8 +33,16 @@ class BattleEntityMgr(object):
 	def on_next_round(self, current_round):
 		_entity = self.get_next_action_entity(current_round)
 		while _entity and not self.is_finish:
+			self.on_start_action(_entity)
 			_entity.action(current_round)
+			self.on_action(_entity)
 			_entity = self.get_next_action_entity(current_round)
+
+	def on_start_action(self, avatar):
+		pass
+
+	def on_action(self, avatar):
+		self.reduce_buff_turn(avatar, 1)
 
 	def get_next_action_entity(self, current_round):
 		infos = []
@@ -51,9 +59,6 @@ class BattleEntityMgr(object):
 			if _entity.dead:
 				continue
 			yield _entity
-
-	def on_action(self, avatar_info, current_round):
-		pass
 
 	def destroy(self):
 		for _entity in self.entity_infos.itervalues():

@@ -65,14 +65,15 @@ class BattleReport(object):
 		for eid, entity in self.entity_infos.iteritems():
 			self.report_data = self.report_data.replace(u'【%s】'%eid, u'【(%s)%s】'%(eid+1,entity.role_info.name))
 
-	# def on_action(self, avatar_info, current_round):
-	# 	self.report_data += u'%s行动结束！\n'%avatar_info.eid
-
 	def on_damage(self, damage_struct):
-		user, target, _damage = damage_struct.user, damage_struct.target, damage_struct.get_real_value()
-		self.report_data += u'\t【%s】(%s)对【%s】(%s)造成%s点伤害，【%s】剩余生命%s\n'%(user.eid, user.get_attr('hp'), target.eid, target.get_attr('hp') + _damage, _damage, target.eid, target.get_attr('hp'))
+		user, target, value = damage_struct.user, damage_struct.target, damage_struct.get_real_value()
+		self.report_data += u'\t【%s】(%s)对【%s】(%s)造成%s点伤害，【%s】剩余生命%s\n'%(user.eid, user.get_attr('hp'), target.eid, target.get_attr('hp') + value, value, target.eid, target.get_attr('hp'))
 
-	def on_before_use_skill(self, skill_struct):
+	def on_cure(self, cure_struct):
+		user, target, value = cure_struct.user, cure_struct.target, cure_struct.get_real_value()
+		self.report_data += u'\t【%s】(%s)为【%s】(%s)恢复%s点生命，【%s】当前生命%s\n'%(user.eid, user.get_attr('hp'), target.eid, target.get_attr('hp') + value, value, target.eid, target.get_attr('hp'))
+
+	def on_before_real_use_skill(self, skill_struct):
 		self.report_data += u'【%s】发动技能【%s】\n'%(skill_struct.user.eid, skill_struct.skill.name)
 
 	def on_entity_die(self, killer, dead):
@@ -103,6 +104,19 @@ class BattleReport(object):
 	def on_pass_action(self, avatar, current_round):
 		self.report_data += u'【%s】无法行动\n'%(avatar.eid)
 
-	def on_start_action(self, avatar, current_round):
+	def on_start_action(self, avatar):
 		if avatar.have_state('charm'):
-			self.report_data += u'【%s】不分敌我目标\n'%(avatar.eid)	
+			self.report_data += u'【%s】不分敌我目标\n'%(avatar.eid)
+
+	def on_prepare_skill(self, skill_struct):
+		self.report_data += u'【%s】的技能【%s】开始准备\n'%(skill_struct.user.eid, skill_struct.skill.name)
+
+	def on_continue_preapre(self, skill_struct):
+		self.report_data += u'【%s】的技能【%s】继续准备\n'%(skill_struct.user.eid, skill_struct.skill.name)
+
+	def on_interrupt_prepare_skills(self, avatar, skills):
+		for skill in skills:
+			self.report_data += u'【%s】的技能【%s】被打断了\n'%(avatar.eid, skill.name)
+
+	def on_not_exist_targets(self, effect_struct):
+		self.report_data += u'【%s】的【%s】在范围内没有目标\n'%(effect_struct.user.eid, effect_struct.effect.name)
