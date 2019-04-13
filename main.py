@@ -12,7 +12,7 @@ def test():
 
 	battle_info = {}
 	entity_infos = {}
-	key_data = (1,5,9,3,8,4)
+	key_data = range(4,10)
 	for x in xrange(6):
 		role_id = random.choice(data.role_info.keys())
 		level = random.randrange(100,101)

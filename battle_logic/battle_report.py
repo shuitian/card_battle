@@ -71,7 +71,7 @@ class BattleReport(object):
 
 	def on_cure(self, cure_struct):
 		user, target, value = cure_struct.user, cure_struct.target, cure_struct.get_real_value()
-		self.report_data += u'\t【%s】(%s)为【%s】(%s)恢复%s点生命，【%s】当前生命%s\n'%(user.eid, user.get_attr('hp'), target.eid, target.get_attr('hp') + value, value, target.eid, target.get_attr('hp'))
+		self.report_data += u'\t【%s】(%s)为【%s】(%s)恢复%s点生命，【%s】当前生命%s\n'%(user.eid, user.get_attr('hp'), target.eid, target.get_attr('hp') - value, value, target.eid, target.get_attr('hp'))
 
 	def on_before_real_use_skill(self, skill_struct):
 		self.report_data += u'【%s】发动技能【%s】\n'%(skill_struct.user.eid, skill_struct.skill.name)

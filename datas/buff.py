@@ -41,5 +41,6 @@ data = {
 	207:Record(207,(20,21,22),'减受治疗','受到的治疗减少$value$','已存在同等或更强的受治疗增加效果',None,1,'sub_attr',{'attr':'be_cure_add_rate','max_value':'0.9'}),
 	301:Record(301,(20,21,30),'混乱',None,'已存在混乱效果','陷入混乱中，无法行动',None,'add_control',{'effect':'confusion'}),
 	302:Record(302,(20,21,30),'暴走',None,'已存在暴走效果','陷入暴走中，不分敌我目标',None,'add_control',{'effect':'charm'}),
-	303:Record(303,(20,21,30),'禁疗',None,'已存在禁疗效果','无法受到治疗',None,'add_control',{'effect':'forbid_cure'})
+	303:Record(303,(20,21,30),'禁疗',None,'已存在禁疗效果','无法受到治疗',None,'add_control',{'effect':'forbid_cure'}),
+	304:Record(304,(20,21,30),'眩晕',None,'已存在眩晕效果','陷入眩晕中，无法行动',None,'add_control',{'effect':'confusion'})
 }

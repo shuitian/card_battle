@@ -52,6 +52,10 @@ class AvatarSkillMgr(object):
 		for skill_id in skill_ids:
 			if self.battle.is_finish:
 				continue
+			if self.have_state('confusion'):
+				self.battle.on_pass_action(self, current_round)
+				self.interrupt_prepare_skills()
+				return 
 			self.battle.use_skill(self, skill_id)
 
 	def get_skill(self, skill_id):
