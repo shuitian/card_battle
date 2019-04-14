@@ -73,9 +73,6 @@ class AvatarBuffMgr(object):
 	def get_buff_value(self, buff_obj):
 		special_effect_args = buff_obj.buff_data.special_effect_args
 		attr = special_effect_args.get('attr', None)
-		if not attr:
-			return None, None
-
 
 		base_value = special_effect_args.get('base_value', None)
 		if not base_value:
@@ -111,6 +108,11 @@ class AvatarBuffMgr(object):
 		special_effect_args = buff_obj.buff_data.special_effect_args
 		effect_name = special_effect_args.get('effect', None)
 		self.states.setdefault(effect_name, []).append(buff_obj)
+
+	def special_effect_execute_effect(self, buff_obj):
+		user = self.battle.get_entity(buff_obj.eid)
+		extra_info = {'value': self.get_buff_value(buff_obj)[1],'buff_obj':buff_obj}
+		self.battle.add_execute_task(user, self, buff_obj.buff_data.special_effect_args, extra_info)
 
 	def get_buff_exist_desc(self, buff_obj):
 		return self._get_buff_desc(buff_obj, buff_obj.buff_data.exist_desc)

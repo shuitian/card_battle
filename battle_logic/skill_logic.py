@@ -1,7 +1,5 @@
 # -*- coding:utf-8 -*-
 
-import data
-import const
 import random
 import battle_common
 
@@ -20,7 +18,6 @@ class SkillLogic(object):
 			return
 
 		self.real_use_skill(skill_struct)
-		self.one_after_use_skill(skill_struct)
 
 	def use_prepare_skill(self, skill_struct):
 		skill = skill_struct.skill
@@ -32,7 +29,6 @@ class SkillLogic(object):
 		skill.left_round -= 1
 		if skill.left_round == 0:
 			self.real_use_skill(skill_struct)
-			self.one_after_use_skill(skill_struct)
 		else:
 			self.continue_preapre(skill_struct)
 
@@ -57,6 +53,7 @@ class SkillLogic(object):
 		for effect_id in effect_list:
 			effect_struct = battle_common.EffectStruct(skill_struct.user, skill_struct.skill_id, effect_id)
 			self.calc_one_skill_effect(effect_struct)
+		self.one_after_use_skill(skill_struct)
 
 	def one_after_use_skill(self, skill_struct):
 		pass

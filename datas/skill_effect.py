@@ -35,7 +35,7 @@ data = {
 	2001:Record(2001,'grass','藤鞭',3,'is_enemy',1,(('damage',{'rate':'1.5'}),('add_buff',{'base_value':'20','buff_id':'202','turn':'2'}),(None,{}))),
 	2002:Record(2002,'grass','飞叶快刀',5,'is_enemy',2,(('damage',{'rate':'1.5'}),(None,{}),(None,{}))),
 	2003:Record(2003,'grass','日光术',4,'is_enemy',1,(('damage',{'rate':'2.8'}),(None,{}),(None,{}))),
-	2004:Record(2004,'grass','寄生种子',4,'is_enemy',1,((None,{}),(None,{}),(None,{}))),
+	2004:Record(2004,'grass','寄生种子',5,'is_enemy',3,(('add_buff',{'base_value':'15','buff_id':'1001','turn':'10'}),(None,{}),(None,{}))),
 	2005:Record(2005,'grass','花瓣舞',5,'is_enemy',3,(('damage',{'rate':'1.5'}),(None,{}),(None,{}))),
 	3001:Record(3001,'fire','火花',3,'is_enemy',1,(('damage',{'rate':'1.5'}),(None,{}),(None,{}))),
 	3002:Record(3002,'fire','喷射火焰',4,'is_enemy',2,(('damage',{'rate':'1.3'}),(None,{}),(None,{}))),

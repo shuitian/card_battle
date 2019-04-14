@@ -11,6 +11,22 @@ class BattleEntityMgr(object):
 		self.left_infos = [None]*3
 		self.right_infos = [None]*3
 
+		self.execute_tasks = {} # execute_time : [task_info, task_info]
+
+	def add_execute_task(self, user, target, execute_args, extra_info):
+		print '   add_execute_task',user, target, execute_args, extra_info
+		execute_time = execute_args.get('execute_time')
+		task_info = user, target, execute_args, extra_info
+		self.execute_tasks.setdefault(execute_time, []).append(task_info)
+
+	def remove_execute_task(self, execute_time, task_info):
+		if execute_time not in self.execute_tasks:
+			return
+
+		task_info_list = self.execute_tasks[execute_time]
+		if task_info in task_info_list:
+			task_info_list.remove(task_info)
+
 	def get_entity_by_pos(self, pos):
 		return self.pos_infos[pos]
 
@@ -31,12 +47,23 @@ class BattleEntityMgr(object):
 		self.pos_infos[_avatar.get_attr('pos')] = _avatar
 
 	def on_next_round(self, current_round):
+		self.on_event('round_start')
 		_entity = self.get_next_action_entity(current_round)
 		while _entity and not self.is_finish:
 			self.on_start_action(_entity)
 			_entity.action(current_round)
 			self.on_action(_entity)
 			_entity = self.get_next_action_entity(current_round)
+
+	def on_event(self, event_name):
+		func = getattr(self, 'on_event_%s'%event_name, None)
+		func and func()
+		task_list = self.execute_tasks.get(event_name, [])
+		for task_info in task_list:
+			user, target, execute_args, extra_info = task_info
+			execute_task = execute_args.get('execute_task')
+			func = getattr(self, 'execute_task_%s'%execute_task)
+			func(user, target, execute_args, extra_info)
 
 	def on_start_action(self, avatar):
 		pass

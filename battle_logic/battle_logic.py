@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
 
-import data
 import const
 
 class BattleLogic(object):
@@ -16,6 +15,7 @@ class BattleLogic(object):
 	def run(self):
 		self.create_entity_infos()
 		self.prepare_battle()
+		self.on_event('battle_prepare')
 		for _ in xrange(self.total_round):
 			self.next_round()
 		self.end_battle()
@@ -35,6 +35,7 @@ class BattleLogic(object):
 	def next_round(self):
 		if self.is_finish:
 			return
+		
 		self.current_round += 1
 		self.on_begin_next_round(self.current_round)
 		self.on_next_round(self.current_round)

@@ -36,6 +36,9 @@ class AvatarSkillMgr(object):
 
 	def add_skill(self, skill_id):
 		_skill = skill(skill_id, self)
+		passive_args = _skill.passive_args
+		if passive_args:
+			self.battle.add_execute_task(self, self, passive_args, None)
 		self.skills[skill_id] = _skill
 
 	def do_action(self, current_round):
@@ -51,6 +54,9 @@ class AvatarSkillMgr(object):
 		random.shuffle(skill_ids)
 		for skill_id in skill_ids:
 			if self.battle.is_finish:
+				continue
+			_skill = self.get_skill(skill_id)
+			if _skill.passive_flag:
 				continue
 			if self.have_state('confusion'):
 				self.battle.on_pass_action(self, current_round)

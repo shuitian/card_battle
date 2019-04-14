@@ -1,36 +1,42 @@
 # -*- coding:utf-8 -*-
 
 import data
-import const
-import random
 import battle_common
 
 class DamageLogic(object):
 	"""伤害相关代码"""
 
-	def execute_type_damage(self, user, effect, target, execute_argv):
-		rate = float(execute_argv.get('rate', 1.0))
-		effect_base = execute_argv.get('effect_base', 'atk')
-		damage_struct = battle_common.DamageStruct(user, target, user.get_attr(effect_base) * rate)
-		
-		damage_struct.set_rate('defence', 1000.0/(1000 + target.get_attr("defence")))
-		damage_struct.set_rate('attribute', self.get_attribute_rate(user, target, effect))
-
+	def apply_damage(self, damage_struct):
+		target = damage_struct.target
 		target.sub_attr('hp', damage_struct.get_real_value())
 		self.on_damage(damage_struct)
 		if target.get_attr('hp') <= 0:
-			self.make_entity_die(user, target)
+			self.make_entity_die(damage_struct.user, target)
 
-	def execute_type_cure(self, user, effect, target, execute_argv):
-		rate = float(execute_argv.get('rate', 1.0))
-		effect_base = execute_argv.get('effect_base', 'atk')
-		cure_struct = battle_common.CureStruct(user, target, user.get_attr(effect_base) * rate)
-		
-		# cure_struct.set_rate('defence', 1000.0/(1000 + target.get_attr("defence")))
-		# cure_struct.set_rate('attribute', self.get_attribute_rate(user, target, effect))
-
-		target.add_attr('hp', cure_struct.get_real_value())
+	def apply_cure(self, cure_struct):
+		cure_struct.target.add_attr('hp', cure_struct.get_real_value())
 		self.on_cure(cure_struct)
+
+	def absorb_hp(self, user, target, value, extra_info=None):
+		damage_struct = battle_common.DamageStruct(user, target, value, extra_info)
+
+		self.apply_damage(damage_struct)
+
+		cure_struct = battle_common.CureStruct(user, user, damage_struct.get_real_value(), extra_info)
+		self.apply_cure(cure_struct)
+
+	def create_damage(self, user, target, effect, value, extra_info=None):
+		damage_struct = battle_common.DamageStruct(user, target, value, extra_info)
+
+		damage_struct.set_rate('defence', 1000.0/(1000 + target.get_attr("defence")))
+		damage_struct.set_rate('attribute', self.get_attribute_rate(user, target, effect))
+
+		self.apply_damage(damage_struct)
+
+	def create_cure(self, user, target, effect, value, extra_info=None):
+		cure_struct = battle_common.CureStruct(user, target, value, extra_info)
+		
+		self.apply_cure(cure_struct)
 
 	def on_damage(self, damage_struct):
 		pass

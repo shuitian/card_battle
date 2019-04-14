@@ -2,6 +2,7 @@
 
 import data
 import random
+
 class SkillStruct(object):
 	"""技能释放结构"""
 	def __init__(self, user, skill_id):
@@ -33,11 +34,12 @@ class EffectStruct(object):
 
 class HpStruct(object):
 	"""生命值变化数据结构"""
-	def __init__(self, user, target, base_value):
+	def __init__(self, user, target, base_value, extra_info):
 		super(HpStruct, self).__init__()
 		self.user = user
 		self.target = target
 		self._base_value = base_value
+		self.extra_info = extra_info
 
 		self.rates = {}
 		self._real_value = None

@@ -1,22 +1,7 @@
 # -*- coding:utf-8 -*-
 
-# import data
-# import const
-# import random
-# import battle_common
-
 class BuffLogic(object):
 	"""状态相关代码"""
-
-	def execute_type_add_buff(self, user, effect, target, execute_argv):
-		buff_id = int(execute_argv.get('buff_id'))
-		turn = int(execute_argv.get('turn', 1))
-
-		base_value = float(execute_argv.get('base_value', 0))
-
-		rate = float(execute_argv.get('rate', 1.0))
-		user_property = base_value * rate
-		self.add_buff_to_target(user, target, buff_id, turn, user_property)
 
 	def add_buff_to_target(self, user, target, buff_id, turn, user_property=None):
 		'''
