@@ -25,7 +25,7 @@ class Record(object):
 data = {
 	1001:Record(1001,'撞击',1.0,0,(1001,),None,{}),
 	1002:Record(1002,'叫声',0.4,0,(1002,),None,{}),
-	1003:Record(1003,'生长',0.35,0,(1003,),None,{}),
+	1003:Record(1003,'生长',0.35,0,(1003,),1,{'execute_id':'1003','execute_task':'execute_skill','execute_time':'battle_prepare'}),
 	1004:Record(1004,'抓',1.0,0,(1004,),None,{}),
 	1005:Record(1005,'烟雾',0.35,0,(1005,),None,{}),
 	1006:Record(1006,'乱抓',0.5,0,(1006,1006,1006,1006),None,{}),

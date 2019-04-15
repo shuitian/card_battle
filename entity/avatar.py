@@ -41,8 +41,10 @@ class AvatarInfo(base_entity.BaseEntity):
 		if not self.attr_modifiers[name]:
 			del self.attr_modifiers[name]
 
-	def get_attr(self, name):
-		base_value = self.attrs[name]
+	def get_attr(self, name, default=None):
+		base_value = self.attrs.get(name, default)
+		if not base_value:
+			return max(base_value, 0)
 		_data = self.attr_modifiers.get(name, {})
 		for change_value in _data.itervalues():
 			base_value += change_value

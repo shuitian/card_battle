@@ -84,6 +84,10 @@ class AvatarBuffMgr(object):
 		min_value = special_effect_args.get('min_value',None)
 		if min_value:
 			base_value = min(base_value, min_value)
+
+		if float(int(base_value)) == base_value:
+			base_value = int(base_value)
+
 		return attr, base_value
 
 	def special_effect_add_attr(self, buff_obj):
@@ -128,6 +132,10 @@ class AvatarBuffMgr(object):
 			return desc
 
 		desc = desc.replace('$value$', str(self.get_buff_value(buff_obj)[1]))
+		value = self.get_buff_value(buff_obj)[1] * 100
+		if float(int(value)) == value:
+			value = int(value)
+		desc = desc.replace('%value', str(value))
 		attr_dict = {
 			u'$攻击':'atk',
 			u'$防御':'defence',

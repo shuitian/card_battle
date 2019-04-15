@@ -28,6 +28,8 @@ class DamageLogic(object):
 	def create_damage(self, user, target, effect, value, extra_info=None):
 		damage_struct = battle_common.DamageStruct(user, target, value, extra_info)
 
+		damage_struct.set_rate('damage_add_rate', user.get_attr('damage_add_rate', 1))
+		damage_struct.set_rate('damaged_add_rate', target.get_attr('damaged_add_rate', 1))
 		damage_struct.set_rate('defence', 1000.0/(1000 + target.get_attr("defence")))
 		damage_struct.set_rate('attribute', self.get_attribute_rate(user, target, effect))
 
@@ -35,7 +37,8 @@ class DamageLogic(object):
 
 	def create_cure(self, user, target, effect, value, extra_info=None):
 		cure_struct = battle_common.CureStruct(user, target, value, extra_info)
-		
+		cure_struct.set_rate('cure_add_rate', user.get_attr('cure_add_rate', 1))
+		cure_struct.set_rate('be_cure_add_rate', target.get_attr('be_cure_add_rate', 1))
 		self.apply_cure(cure_struct)
 
 	def on_damage(self, damage_struct):

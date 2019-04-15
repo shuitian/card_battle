@@ -14,7 +14,6 @@ class BattleEntityMgr(object):
 		self.execute_tasks = {} # execute_time : [task_info, task_info]
 
 	def add_execute_task(self, user, target, execute_args, extra_info):
-		print '   add_execute_task',user, target, execute_args, extra_info
 		execute_time = execute_args.get('execute_time')
 		task_info = user, target, execute_args, extra_info
 		self.execute_tasks.setdefault(execute_time, []).append(task_info)
@@ -98,16 +97,10 @@ class BattleEntityMgr(object):
 			self.end_battle()
 
 	def check_battle_end(self):
-		for entity in self.left_infos:
-			if not entity.dead:
-				break
-		else:
+		if self.left_infos[0].dead:
 			self.winner = const.WINNER_RIGHT
 			return True
 
-		for entity in self.right_infos:
-			if not entity.dead:
-				break
-		else:
+		if self.right_infos[0].dead:
 			self.winner = const.WINNER_LEFT
 			return True

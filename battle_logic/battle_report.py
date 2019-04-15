@@ -16,16 +16,28 @@ class BattleReport(object):
 		entity = self.left_infos[0]
 		self.report_data += u'(大营)【%s】 %s级 生命:%s\n'%(entity.eid, entity.level, entity.get_attr('hp'))
 		entity = self.left_infos[1]
-		self.report_data += u'(中军)【%s】 %s级 生命:%s\n'%(entity.eid, entity.level, entity.get_attr('hp'))
+		if entity:
+			self.report_data += u'(中军)【%s】 %s级 生命:%s\n'%(entity.eid, entity.level, entity.get_attr('hp'))
+		else:
+			self.report_data += u'(中军)无\n'
 		entity = self.left_infos[2]
-		self.report_data += u'(前锋)【%s】 %s级 生命:%s\n'%(entity.eid, entity.level, entity.get_attr('hp'))
+		if entity:
+			self.report_data += u'(前锋)【%s】 %s级 生命:%s\n'%(entity.eid, entity.level, entity.get_attr('hp'))
+		else:
+			self.report_data += u'(前锋)无\n'
 		self.report_data += '\n'
 
 		self.report_data += u'【守方阵容】\n'
 		entity = self.right_infos[0]
-		self.report_data += u'(前锋)【%s】 %s级 生命:%s\n'%(entity.eid, entity.level, entity.get_attr('hp'))
+		if entity:
+			self.report_data += u'(前锋)【%s】 %s级 生命:%s\n'%(entity.eid, entity.level, entity.get_attr('hp'))
+		else:
+			self.report_data += u'(前锋)无\n'
 		entity = self.right_infos[1]
-		self.report_data += u'(中军)【%s】 %s级 生命:%s\n'%(entity.eid, entity.level, entity.get_attr('hp'))
+		if entity:
+			self.report_data += u'(中军)【%s】 %s级 生命:%s\n'%(entity.eid, entity.level, entity.get_attr('hp'))
+		else:
+			self.report_data += u'(中军)无\n'
 		entity = self.right_infos[2]
 		self.report_data += u'(大营)【%s】 %s级 生命:%s\n'%(entity.eid, entity.level, entity.get_attr('hp'))
 		self.report_data += '\n'
@@ -45,16 +57,20 @@ class BattleReport(object):
 		entity = self.left_infos[0]
 		self.report_data += u'(大营)【%s】 %s级别 生命:%s\n'%(entity.eid, entity.level, entity.get_attr('hp'))
 		entity = self.left_infos[1]
-		self.report_data += u'(中军)【%s】 %s级别 生命:%s\n'%(entity.eid, entity.level, entity.get_attr('hp'))
+		if entity:
+			self.report_data += u'(中军)【%s】 %s级别 生命:%s\n'%(entity.eid, entity.level, entity.get_attr('hp'))
 		entity = self.left_infos[2]
-		self.report_data += u'(前锋)【%s】 %s级别 生命:%s\n'%(entity.eid, entity.level, entity.get_attr('hp'))
+		if entity:
+			self.report_data += u'(前锋)【%s】 %s级别 生命:%s\n'%(entity.eid, entity.level, entity.get_attr('hp'))
 		self.report_data += '\n'
 
 		self.report_data += u'【守方阵容】\n'
 		entity = self.right_infos[0]
-		self.report_data += u'(前锋)【%s】 %s级别 生命:%s\n'%(entity.eid, entity.level, entity.get_attr('hp'))
+		if entity:
+			self.report_data += u'(前锋)【%s】 %s级别 生命:%s\n'%(entity.eid, entity.level, entity.get_attr('hp'))
 		entity = self.right_infos[1]
-		self.report_data += u'(中军)【%s】 %s级别 生命:%s\n'%(entity.eid, entity.level, entity.get_attr('hp'))
+		if entity:
+			self.report_data += u'(中军)【%s】 %s级别 生命:%s\n'%(entity.eid, entity.level, entity.get_attr('hp'))
 		entity = self.right_infos[2]
 		self.report_data += u'(大营)【%s】 %s级别 生命:%s\n'%(entity.eid, entity.level, entity.get_attr('hp'))
 

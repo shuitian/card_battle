@@ -112,7 +112,8 @@ class SkillLogic(object):
 
 		dis = 1
 		for pos in xrange(pos_1+1, pos_2):
-			dis += not self.get_entity_by_pos(pos).dead
+			entity = self.get_entity_by_pos(pos)
+			dis += bool(entity and not entity.dead)
 		return dis
 
 	def calc_one_target_effect(self, user, effect, target, execute_info):
