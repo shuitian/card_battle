@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 import const
+from utils import utils
 
 class BattleReport(object):
 	"""战报记录"""
@@ -112,21 +113,21 @@ class BattleReport(object):
 		self.report_data += u'\t' * self.skill_step + u'【%s】无法再战\n'%(dead.eid)
 
 	def on_add_buff_failed(self, target, buff_obj):
-		self.report_data += u'\t' * self.skill_step + u'【%s】已存在%s效果\n'%(target.eid, target.get_buff_exist_desc(buff_obj))
+		self.report_data += u'\t' * self.skill_step + u'【%s】%s效果\n'%(target.eid, utils.get_buff_exist_desc(target, buff_obj))
 
 	def on_add_buff(self, target, buff_obj):
-		add_desc = target.get_buff_add_desc(buff_obj)
+		add_desc = utils.get_buff_add_desc(target, buff_obj)
 		if not add_desc:
 			add_desc = u'获得【%s】'%(buff_obj.buff_data.name)
 		if add_desc:
 			self.report_data += u'\t' * self.skill_step + u'【%s】%s\n'%(target.eid, add_desc)
-		desc = target.get_buff_desc(buff_obj)
+		desc = utils.get_buff_desc(target, buff_obj)
 		if desc:
 			self.report_data += u'\t' * (self.skill_step + 1) + u'【%s】%s\n'%(target.eid, desc)
 
 	def on_refresh_buff(self, target, buff_obj):
 		self.report_data += u'\t' * self.skill_step + u'【%s】刷新了【%s】\n'%(target.eid, buff_obj.buff_data.name)
-		desc = target.get_buff_desc(buff_obj)
+		desc = utils.get_buff_desc(target, buff_obj)
 		if desc:
 			self.report_data += u'\t' * (self.skill_step + 1) + u'【%s】%s\n'%(target.eid, desc)
 
@@ -155,3 +156,9 @@ class BattleReport(object):
 
 	def on_event_battle_prepare(self):
 		self.report_data += u'准备阶段\n'
+
+	def on_effect_not_hit(self, user, effect, target):
+		self.report_data += u'\t【%s】没有看清【%s】的位置，效果未命中\n'%(user.eid, target.eid)
+		
+	def on_damage_be_evade(self, user, effect, target):
+		self.report_data += u'\t【%s】敏捷地躲过了伤害\n'%(target.eid)

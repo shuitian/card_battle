@@ -21,9 +21,13 @@ class DamageLogic(object):
 		damage_struct = battle_common.DamageStruct(user, target, value, extra_info)
 
 		self.apply_damage(damage_struct)
-
 		cure_struct = battle_common.CureStruct(user, user, damage_struct.get_real_value(), extra_info)
 		self.apply_cure(cure_struct)
+
+	def create_dot(self, user, target, value, extra_info=None):
+		damage_struct = battle_common.DamageStruct(user, target, value, extra_info)
+
+		self.apply_damage(damage_struct)
 
 	def create_damage(self, user, target, effect, value, extra_info=None):
 		damage_struct = battle_common.DamageStruct(user, target, value, extra_info)
@@ -39,6 +43,7 @@ class DamageLogic(object):
 		cure_struct = battle_common.CureStruct(user, target, value, extra_info)
 		cure_struct.set_rate('cure_add_rate', user.get_attr('cure_add_rate', 1))
 		cure_struct.set_rate('be_cure_add_rate', target.get_attr('be_cure_add_rate', 1))
+
 		self.apply_cure(cure_struct)
 
 	def on_damage(self, damage_struct):

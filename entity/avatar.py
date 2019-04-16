@@ -21,6 +21,7 @@ class AvatarInfo(base_entity.BaseEntity):
 		self.dead = False
 
 		self.attr_modifiers = {} # {'atk':{m_type:v1}}
+
 		self.init()
 
 	def init(self):

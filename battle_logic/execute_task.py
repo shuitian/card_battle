@@ -9,6 +9,11 @@ class ExecuteTask(object):
 			return
 		self.absorb_hp(user, target, extra_info.get('value', None), extra_info = extra_info)
 
+	def execute_task_damage(self, user, target, execute_args, extra_info):
+		if target.dead:
+			return
+		self.create_dot(user, target, extra_info.get('value', None), extra_info = extra_info)
+
 	def execute_task_execute_skill(self, user, target, execute_args, extra_info):
 		if user.dead:
 			return

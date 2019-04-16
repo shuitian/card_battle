@@ -117,8 +117,22 @@ class SkillLogic(object):
 		return dis
 
 	def calc_one_target_effect(self, user, effect, target, execute_info):
+		hit = self.check_hit(user, effect, target)
+		if not hit:
+			self.on_effect_not_hit(user, effect, target)
+			return
 		execute_type, execute_argv = execute_info
 		if not execute_type:
 			return
 		func = getattr(self, 'execute_type_%s'%execute_type)
 		func(user, effect, target, execute_argv)
+
+	def check_hit(self, user, effect, target):
+		if user == target:
+			return True
+		hit_rate = user.get_attr('hit_rate', 1)
+		r = random.random()
+		return r < hit_rate
+
+	def on_effect_not_hit(self, user, effect, target):
+		pass

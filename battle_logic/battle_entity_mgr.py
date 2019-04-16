@@ -101,6 +101,6 @@ class BattleEntityMgr(object):
 			self.winner = const.WINNER_RIGHT
 			return True
 
-		if self.right_infos[0].dead:
+		if self.right_infos[-1].dead:
 			self.winner = const.WINNER_LEFT
 			return True
