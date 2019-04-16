@@ -12,3 +12,12 @@ EXECUTE_TARGET_ALL = 3
 # 胜利方
 WINNER_LEFT = 1
 WINNER_RIGHT = 2
+
+# 属性标准
+ATTR_BASE = {
+	'hp' : 10000,
+	'max_hp' : 10000,
+	'atk' : 100,
+	'defence' : 100,
+	'speed' : 100,
+}

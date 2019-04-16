@@ -44,6 +44,7 @@ class BuffLogic(object):
 		else:
 			can_refresh = False
 
+		print '        real_add_buff',target.eid, buff_id,turn,eid
 		buff_obj = target.add_buff(buff_id, turn, eid, extra_info)
 		if can_refresh:
 			self.on_refresh_buff(target, buff_obj)

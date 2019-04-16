@@ -7,6 +7,7 @@ class ExecuteTask(object):
 	def execute_task_absorb_hp(self, user, target, execute_args, extra_info):
 		if target.dead or user.dead:
 			return
+
 		self.absorb_hp(user, target, extra_info.get('value', None), extra_info = extra_info)
 
 	def execute_task_damage(self, user, target, execute_args, extra_info):

@@ -23,7 +23,10 @@ def gen_sequence_function(funcs):
 
 def assemble_function(klass, funcs):
 	for name, funs in funcs.iteritems():
-		func = gen_sequence_function(funs)
+		if len(funs) == 1:
+			func = funs[0]
+		else:
+			func = gen_sequence_function(funs)
 		setattr(klass, name, func)
 
 def components(*import_components):

@@ -121,11 +121,11 @@ class SkillLogic(object):
 		if not hit:
 			self.on_effect_not_hit(user, effect, target)
 			return
-		execute_type, execute_argv = execute_info
+		execute_type, execute_args = execute_info
 		if not execute_type:
 			return
 		func = getattr(self, 'execute_type_%s'%execute_type)
-		func(user, effect, target, execute_argv)
+		func(user, effect, target, execute_args)
 
 	def check_hit(self, user, effect, target):
 		if user == target:

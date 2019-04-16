@@ -9,7 +9,7 @@ class BattleReport(object):
 		self.skill_step = 0
 		self.report_data = ''
 
-	def on_prepare_battle(self):
+	def on_battle_start(self):
 		self.report_data += u'战斗开始！\n'
 		self.report_data += '\n'
 

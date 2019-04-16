@@ -94,7 +94,7 @@ class AvatarBuffMgr(object):
 	def special_effect_execute_effect(self, buff_obj):
 		user = self.battle.get_entity(buff_obj.eid)
 		extra_info = {'value': utils.get_buff_change_attr_value(buff_obj)[1],'buff_obj':buff_obj}
-		self.battle.add_execute_task(user, self, buff_obj.buff_data.special_effect_args, extra_info)
+		self.battle.add_execute_task(buff_obj, user, self, buff_obj.buff_data.special_effect_args, extra_info)
 
 	def del_buff(self, buff_id):
 		buff_obj = self.buffs.pop(buff_id)
@@ -107,6 +107,8 @@ class AvatarBuffMgr(object):
 		effect_name = special_effect_args.get('effect', None)
 		if effect_name and effect_name in self.states:
 			self.states[effect_name].remove(buff_obj)
+
+		self.battle.remove_execute_task(buff_obj)
 
 	def have_state(self, state_name):
 		return self.states.get(state_name, None)

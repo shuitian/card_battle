@@ -13,18 +13,18 @@ class BattleEntityMgr(object):
 
 		self.execute_tasks = {} # execute_time : [task_info, task_info]
 
-	def add_execute_task(self, user, target, execute_args, extra_info):
+	def add_execute_task(self, tag, user, target, execute_args, extra_info):
 		execute_time = execute_args.get('execute_time')
-		task_info = user, target, execute_args, extra_info
+		task_info = tag, user, target, execute_args, extra_info
 		self.execute_tasks.setdefault(execute_time, []).append(task_info)
 
-	def remove_execute_task(self, execute_time, task_info):
-		if execute_time not in self.execute_tasks:
-			return
-
-		task_info_list = self.execute_tasks[execute_time]
-		if task_info in task_info_list:
-			task_info_list.remove(task_info)
+	def remove_execute_task(self, tag):
+		for task_info_list in self.execute_tasks.itervalues():
+			for task_info in task_info_list[:]:
+				_tag, user, target, execute_args, extra_info = task_info
+				if _tag != tag:
+					continue
+				task_info_list.remove(task_info)
 
 	def get_entity_by_pos(self, pos):
 		return self.pos_infos[pos]
@@ -59,7 +59,7 @@ class BattleEntityMgr(object):
 		func and func()
 		task_list = self.execute_tasks.get(event_name, [])
 		for task_info in task_list:
-			user, target, execute_args, extra_info = task_info
+			tag, user, target, execute_args, extra_info = task_info
 			execute_task = execute_args.get('execute_task')
 			func = getattr(self, 'execute_task_%s'%execute_task)
 			func(user, target, execute_args, extra_info)

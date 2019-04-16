@@ -27,6 +27,7 @@ class AvatarSkillMgr(object):
 	
 	def init(self):
 		self.skills = {}
+		self.execute_tasks = []
 		self.setup_skills()
 
 	def setup_skills(self):
@@ -38,8 +39,12 @@ class AvatarSkillMgr(object):
 		_skill = skill(skill_id, self)
 		passive_args = _skill.passive_args
 		if passive_args:
-			self.battle.add_execute_task(self, self, passive_args, None)
+			self.execute_tasks.append(passive_args)
 		self.skills[skill_id] = _skill
+
+	def setup_execute_task(self):
+		for passive_args in self.execute_tasks:
+			self.battle.add_execute_task(self, self, self, passive_args, None)
 
 	def do_action(self, current_round):
 		if self.have_state('confusion'):

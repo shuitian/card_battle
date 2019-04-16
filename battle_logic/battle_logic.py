@@ -14,8 +14,8 @@ class BattleLogic(object):
 
 	def run(self):
 		self.create_entity_infos()
-		self.prepare_battle()
-		self.on_event('battle_prepare')
+		self.battle_start()
+		self.battle_prepare()
 		for _ in xrange(self.total_round):
 			self.next_round()
 		self.end_battle()
@@ -25,11 +25,25 @@ class BattleLogic(object):
 	def create_entity_infos(self):
 		pass
 
-	def prepare_battle(self):
+	def battle_start(self):
 		self.current_round = 0
-		self.on_prepare_battle()
+		self.on_battle_start()
 
-	def on_prepare_battle(self):
+	def battle_prepare(self):
+		self.setup_execute_task()
+
+		self.on_event('battle_prepare')
+
+	def setup_execute_task(self):
+		infos = []
+		for _entity in self.iter_undead_entity_infos():
+			infos.append((_entity.get_attr('speed'), _entity.eid, _entity))
+		
+		infos.sort(reverse=True)
+		for _, _, info in infos:
+			info.setup_execute_task()
+
+	def on_battle_start(self):
 		pass
 
 	def next_round(self):

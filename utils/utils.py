@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 import data
+import const
 
 def create_role(role_id, level):
 	attrs = {}
@@ -68,3 +69,65 @@ def get_buff_change_attr_value(buff_obj):
 		base_value = int(base_value)
 
 	return attr, base_value
+
+def get_attr_add_rate_value(old_value, user, attr):
+	if not attr:
+		return
+
+	attr_base = const.ATTR_BASE
+	if attr not in attr_base:
+		return old_value
+
+	rate = float(user.get_attr(attr)) / attr_base[attr]
+
+	return old_value * rate
+	
+def _get_value_by_execute_args(execute_args, user, target, default_affect_rate = None):
+	if  'fixed_value' in execute_args:
+		return float(execute_args['fixed_value'])
+
+	if 'base_value' in execute_args:
+		base_value = float(execute_args['base_value'])
+	else:
+		effect_base = execute_args.get('effect_base', 'atk')
+		base_value = user.get_attr(effect_base)
+	
+	# 系数加成
+	rate = float(execute_args.get('rate', 1.0))
+	base_value = base_value * rate
+
+	default_affect_rate = default_affect_rate or {}
+	# 生命属性加成
+	rate = float(execute_args.get('hp_affect_rate', default_affect_rate.get('hp_affect_rate', 0)))
+	if rate:
+		base_value = get_attr_add_rate_value(base_value, user, 'hp')
+		base_value *= rate
+
+	# 攻击属性加成
+	rate = float(execute_args.get('atk_affect_rate', default_affect_rate.get('atk_affect_rate', 0)))
+	if rate:
+		base_value = get_attr_add_rate_value(base_value, user, 'atk')
+		base_value *= rate
+
+	# 防御属性加成
+	rate = float(execute_args.get('defence_affect_rate', default_affect_rate.get('defence_affect_rate', 0)))
+	if rate:
+		base_value = get_attr_add_rate_value(base_value, user, 'defence')
+		base_value *= rate
+
+	# 速度属性加成
+	rate = float(execute_args.get('speed_affect_rate', default_affect_rate.get('speed_affect_rate', 0)))
+	if rate:
+		base_value = get_attr_add_rate_value(base_value, user, 'speed')
+		base_value *= rate
+
+	return base_value
+
+def get_damage_value(execute_args, user, target):
+	return _get_value_by_execute_args(execute_args, user, target, default_affect_rate = {'hp_affect_rate':1})
+
+def get_cure_value(execute_args, user, target):
+	return get_damage_value(execute_args, user, target)
+
+def get_buff_value(execute_args, user, target):
+	return _get_value_by_execute_args(execute_args, user, target)
