@@ -10,7 +10,7 @@ class EffectLogic(object):
 		buff_id = int(execute_args.get('buff_id'))
 		turn = int(execute_args.get('turn', 1))
 
-		value = utils.get_buff_value(execute_args, user, target)
+		value = utils.get_value_by_execute_args(execute_args, user, target)
 		
 		self.add_buff_to_target(user, target, buff_id, turn, value)
 
@@ -20,15 +20,21 @@ class EffectLogic(object):
 			self.on_damage_be_evade(user, effect, target)
 			return
 
-		value = utils.get_damage_value(execute_args, user, target)
+		value = utils.get_value_by_execute_args(execute_args, user, target)
 
-		self.create_damage(user, target, effect, value)
+		_damage_struct = self.create_damage(user, target, effect, value)
+
+		absorb_hp_rate = float(execute_args.get('absorb_hp_rate', 0))
+		if absorb_hp_rate:
+			_real_value = _damage_struct.get_real_value()
+
+			self.create_cure(user, user, effect, _real_value * absorb_hp_rate)
 
 	def execute_type_cure(self, user, effect, target, execute_args):
 		rate = float(execute_args.get('rate', 1.0))
 		effect_base = execute_args.get('effect_base', 'atk')
 
-		value = utils.get_cure_value(execute_args, user, target)
+		value = utils.get_value_by_execute_args(execute_args, user, target)
 
 		self.create_cure(user, target, effect, value)
 
@@ -36,7 +42,7 @@ class EffectLogic(object):
 		buff_id = int(execute_args.get('buff_id'))
 		turn = int(execute_args.get('turn', 1))
 
-		value = utils.get_damage_value(execute_args, user, target)
+		value = utils.get_value_by_execute_args(execute_args, user, target)
 
 		damage_struct = self.create_damage_struct(user, target, value, {})
 		damage_struct = self.fill_damage_rate(damage_struct, effect)
@@ -48,7 +54,7 @@ class EffectLogic(object):
 		buff_id = int(execute_args.get('buff_id'))
 		turn = int(execute_args.get('turn', 1))
 
-		value = utils.get_cure_value(execute_args, user, target)
+		value = utils.get_value_by_execute_args(execute_args, user, target)
 
 		cure_struct = self.create_cure_struct(user, target, value, {})
 		user_property = cure_struct.get_expect_value()

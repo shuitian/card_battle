@@ -15,15 +15,15 @@ class BattleReport(object):
 
 		self.report_data += u'【攻方阵容】\n'
 		entity = self.left_infos[0]
-		self.report_data += u'(大营)【%s】 %s级 生命:%s\n'%(entity.eid, entity.level, entity.get_attr('hp'))
+		self.report_data += u'(大营)【%s】 %s级 生命:%s(资质:%s) 攻击:%s(资质:%s) 防御:%s(资质:%s) 速度:%s(资质:%s) \n'%(entity.eid, entity.level, entity.get_attr('hp'), entity.get_attr('hp_level'), entity.get_attr('atk'), entity.get_attr('atk_level'), entity.get_attr('defence'), entity.get_attr('defence_level'), entity.get_attr('speed'), entity.get_attr('speed_level'))
 		entity = self.left_infos[1]
 		if entity:
-			self.report_data += u'(中军)【%s】 %s级 生命:%s\n'%(entity.eid, entity.level, entity.get_attr('hp'))
+			self.report_data += u'(中军)【%s】 %s级 生命:%s(资质:%s) 攻击:%s(资质:%s) 防御:%s(资质:%s) 速度:%s(资质:%s) \n'%(entity.eid, entity.level, entity.get_attr('hp'), entity.get_attr('hp_level'), entity.get_attr('atk'), entity.get_attr('atk_level'), entity.get_attr('defence'), entity.get_attr('defence_level'), entity.get_attr('speed'), entity.get_attr('speed_level'))
 		else:
 			self.report_data += u'(中军)无\n'
 		entity = self.left_infos[2]
 		if entity:
-			self.report_data += u'(前锋)【%s】 %s级 生命:%s\n'%(entity.eid, entity.level, entity.get_attr('hp'))
+			self.report_data += u'(前锋)【%s】 %s级 生命:%s(资质:%s) 攻击:%s(资质:%s) 防御:%s(资质:%s) 速度:%s(资质:%s) \n'%(entity.eid, entity.level, entity.get_attr('hp'), entity.get_attr('hp_level'), entity.get_attr('atk'), entity.get_attr('atk_level'), entity.get_attr('defence'), entity.get_attr('defence_level'), entity.get_attr('speed'), entity.get_attr('speed_level'))
 		else:
 			self.report_data += u'(前锋)无\n'
 		self.report_data += '\n'
@@ -31,16 +31,16 @@ class BattleReport(object):
 		self.report_data += u'【守方阵容】\n'
 		entity = self.right_infos[0]
 		if entity:
-			self.report_data += u'(前锋)【%s】 %s级 生命:%s\n'%(entity.eid, entity.level, entity.get_attr('hp'))
+			self.report_data += u'(前锋)【%s】 %s级 生命:%s(资质:%s) 攻击:%s(资质:%s) 防御:%s(资质:%s) 速度:%s(资质:%s) \n'%(entity.eid, entity.level, entity.get_attr('hp'), entity.get_attr('hp_level'), entity.get_attr('atk'), entity.get_attr('atk_level'), entity.get_attr('defence'), entity.get_attr('defence_level'), entity.get_attr('speed'), entity.get_attr('speed_level'))
 		else:
 			self.report_data += u'(前锋)无\n'
 		entity = self.right_infos[1]
 		if entity:
-			self.report_data += u'(中军)【%s】 %s级 生命:%s\n'%(entity.eid, entity.level, entity.get_attr('hp'))
+			self.report_data += u'(中军)【%s】 %s级 生命:%s(资质:%s) 攻击:%s(资质:%s) 防御:%s(资质:%s) 速度:%s(资质:%s) \n'%(entity.eid, entity.level, entity.get_attr('hp'), entity.get_attr('hp_level'), entity.get_attr('atk'), entity.get_attr('atk_level'), entity.get_attr('defence'), entity.get_attr('defence_level'), entity.get_attr('speed'), entity.get_attr('speed_level'))
 		else:
 			self.report_data += u'(中军)无\n'
 		entity = self.right_infos[2]
-		self.report_data += u'(大营)【%s】 %s级 生命:%s\n'%(entity.eid, entity.level, entity.get_attr('hp'))
+		self.report_data += u'(大营)【%s】 %s级 生命:%s(资质:%s) 攻击:%s(资质:%s) 防御:%s(资质:%s) 速度:%s(资质:%s) \n'%(entity.eid, entity.level, entity.get_attr('hp'), entity.get_attr('hp_level'), entity.get_attr('atk'), entity.get_attr('atk_level'), entity.get_attr('defence'), entity.get_attr('defence_level'), entity.get_attr('speed'), entity.get_attr('speed_level'))
 		self.report_data += '\n'
 
 	def on_begin_next_round(self, current_round):

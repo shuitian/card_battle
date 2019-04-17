@@ -13,6 +13,10 @@ def init_battle_mgr():
 	from entity import battle_report_mgr
 	gworld.battler_report_mgr = battle_report_mgr.BattleReportMgr()
 
+def init_player():
+	from entity import player
+	gworld.player = player.Player()
+
 def setup_data_mgr():
 	assert 'data' not in sys.modules
 
@@ -38,6 +42,9 @@ def setup():
 
 	# 初始化导表文件
 	setup_data_mgr()
+
+	# 初始化角色
+	init_player()
 
 	# 初始化战斗管理器
 	init_battle_mgr()

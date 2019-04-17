@@ -24,11 +24,11 @@ class Record(object):
 
 data = {
 	1001:Record(1001,'normal','撞击',1,'is_enemy',1,(('damage',{'rate':'0.5'}),)),
-	1002:Record(1002,'normal','叫声',4,'is_enemy',2,(('add_buff',{'base_value':'100','buff_id':'201','turn':'2'}),)),
+	1002:Record(1002,'normal','叫声',4,'is_enemy',2,(('add_buff',{'base_value':'10','buff_id':'201','turn':'2'}),)),
 	1003:Record(1003,'normal','生长',1,'is_self',1,(('add_buff',{'base_value':'0.1','buff_id':'104','turn':'10'}),)),
 	1004:Record(1004,'normal','抓',1,'is_enemy',1,(('damage',{'rate':'1'}),)),
 	1005:Record(1005,'normal','烟雾',5,'is_enemy',2,(('add_buff',{'base_value':'0.1','buff_id':'208','turn':'3'}),)),
-	1006:Record(1006,'normal','乱抓',5,'is_enemy',1,(('damage',{'rate':'0.5'}),)),
+	1006:Record(1006,'normal','乱抓',5,'is_enemy',1,(('damage',{'absorb_hp_rate':'0.5','rate':'0.5'}),)),
 	1007:Record(1007,'normal','摇尾巴',4,'is_enemy',2,(('add_buff',{'base_value':'25','buff_id':'202','turn':'2'}),)),
 	1008:Record(1008,'normal','头槌',4,'is_enemy',1,(('damage',{'rate':'2.1'}),)),
 	1009:Record(1009,'normal','火箭头槌',5,'is_enemy',1,(('damage',{'rate':'2.3'}),)),
@@ -45,11 +45,13 @@ data = {
 	4004:Record(4004,'water','泡沫光纤',5,'is_enemy',2,(('damage',{'rate':'0.5'}),('add_buff',{'base_value':'10','buff_id':'203','turn':'2'}))),
 	4005:Record(4005,'water','水流喷射',5,'is_enemy',2,(('damage',{'rate':'1.1'}),('add_buff',{'buff_id':'303','turn':'2'}))),
 	5001:Record(5001,'poison','毒粉',4,'is_enemy',2,()),
-	6001:Record(6001,'dragon','龙怒',5,'is_enemy',1,(('damage',{'rate':'3.5'}),)),
+	6001:Record(6001,'dragon','龙怒',1,'is_self',1,(('add_buff',{'buff_id':'305','turn':'10'}),)),
+	6002:Record(6002,'dragon','龙威',5,'is_enemy',3,(('add_buff',{'base_value':'0.1','buff_id':'204','turn':'10'}),)),
 	7001:Record(7001,'flying','翅膀攻击',4,'is_enemy',2,(('damage',{'rate':'1.2'}),)),
 	8001:Record(8001,'fighting','地球上投',5,'is_enemy',1,(('damage',{'rate':'5'}),('add_buff',{'buff_id':'304','turn':'1'}))),
 	200301:Record(200301,'grass','日光术回血',1,'is_self',1,(('cure',{'effect_base':'max_hp','rate':'0.05'}),)),
-	200501:Record(200501,'grass','花瓣舞回血',4,'is_teammate',2,(('cure',{'effect_base':'max_hp','rate':'0.1'}),)),
+	200501:Record(200501,'grass','花瓣舞回血',4,'is_teammate_or_self',2,(('cure',{'effect_base':'max_hp','rate':'0.1'}),)),
 	200502:Record(200502,'grass','花瓣舞负面',1,'is_self',1,(('add_buff',{'buff_id':'302','turn':'3'}),)),
+	600101:Record(600101,'dragon','龙怒+伤害',1,'is_self',1,(('add_buff',{'base_value':'0.5','buff_id':'104','turn':'10'}),)),
 	800101:Record(800101,'fighting','地球上投负面',1,'is_self',1,(('damage',{'rate':'0.5'}),('add_buff',{'buff_id':'304','turn':'2'})))
 }

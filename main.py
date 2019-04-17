@@ -10,26 +10,21 @@ def test():
 	import random
 	from utils import utils
 
-	battle_info = {}
-	entity_infos = {}
-	key_data = (3,2,1,4,2,3,3,2,4)
+	key_data = (3,2,1,1,2,6,3,2,4)
+	key_data = (3,None,None,None,None,6)
+	cards = []
 	for x in xrange(6):
-		role_id = random.choice(data.role_info.keys())
+		# card_id = random.choice(data.card_info.keys())
 		level = random.randrange(100,101)
-		role_id = key_data[x]
+		card_id = key_data[x]
 
-		if not role_id:
-			continue
-			
-		entity_info = utils.create_role(role_id, level)
-		entity_info['eid'] = x
-		entity_info['pos'] = x
-		
-		entity_infos[x] = entity_info
+		if card_id:
+			card = utils.create_card(card_id, level)
+		else:
+			card = None
+		cards.append(card)
 
-	battle_info['entity_infos'] = entity_infos
-	_battle = gworld.battle_mgr.new_battle(battle_info)
-	gworld.battle_mgr.start_battle(_battle.battle_id)
+	gworld.player.start_battle(cards[:3], cards[3:])
 
 if __name__ == '__main__':
 	init()

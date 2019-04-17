@@ -2,10 +2,10 @@
 
 import data
 import base_entity
-import entity_components
+import avatar_components
 from utils.class_utils import components
 
-@components(*entity_components.import_all())
+@components(*avatar_components.import_all())
 class AvatarInfo(base_entity.BaseEntity):
 	"""战斗角色"""
 	def __init__(self, battle, eid, attrs):
@@ -15,8 +15,8 @@ class AvatarInfo(base_entity.BaseEntity):
 		self.attrs = attrs
 		self.action_round = 0
 
-		self.role_id = self.attrs.get('role_id')
-		self.role_info = data.role_info[self.role_id]
+		self.role_id = self.attrs.get('card_id')
+		self.role_info = data.card_info[self.role_id]
 		self.level = self.attrs.get('level', 1)
 		self.dead = False
 

@@ -112,3 +112,6 @@ class AvatarBuffMgr(object):
 
 	def have_state(self, state_name):
 		return self.states.get(state_name, None)
+
+	def before_action(self):
+		pass

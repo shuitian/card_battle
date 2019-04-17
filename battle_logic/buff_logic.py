@@ -34,7 +34,6 @@ class BuffLogic(object):
 
 	def _raw_add_buff_to_target(self, target, buff_id, turn, eid, extra_info):
 		'''真正地给一个角色加状态，不触发额外的逻辑'''
-		print '        _raw_add_buff_to_target',target.eid, buff_id,turn,eid
 		buff_obj = target.find_buff_obj(buff_id)
 		if buff_obj:
 			can_refresh = target.can_refresh(buff_obj, extra_info)
@@ -44,7 +43,6 @@ class BuffLogic(object):
 		else:
 			can_refresh = False
 
-		print '        real_add_buff',target.eid, buff_id,turn,eid
 		buff_obj = target.add_buff(buff_id, turn, eid, extra_info)
 		if can_refresh:
 			self.on_refresh_buff(target, buff_obj)

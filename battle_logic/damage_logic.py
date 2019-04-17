@@ -19,18 +19,21 @@ class DamageLogic(object):
 		damage_struct = self.create_damage_struct(user, target, value, extra_info)
 
 		self.apply_damage(damage_struct)
+		return damage_struct
 
 	# 持续治疗
 	def create_hot(self, user, target, value, extra_info=None):
 		cure_struct = self.create_cure_struct(user, target, value, extra_info)
 
 		self.apply_cure(cure_struct)
+		return cure_struct
 
 	# 伤害
 	def create_damage(self, user, target, effect, value, extra_info=None):
 		damage_struct = self.create_damage_struct(user, target, value, extra_info)
 		damage_struct = self.fill_damage_rate(damage_struct, effect)
 		self.apply_damage(damage_struct)
+		return damage_struct
 
 	def create_damage_struct(self, user, target, value, extra_info):
 		damage_struct = battle_common.DamageStruct(user, target, value, extra_info)
@@ -76,6 +79,7 @@ class DamageLogic(object):
 		cure_struct = self.create_cure_struct(user, target, value, extra_info)
 		cure_struct = self.fill_cure_rate(cure_struct)
 		self.apply_cure(cure_struct)
+		return cure_struct
 
 	def create_cure_struct(self, user, target, value, extra_info):
 		cure_struct = battle_common.CureStruct(user, target, value, extra_info)
