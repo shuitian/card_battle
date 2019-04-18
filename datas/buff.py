@@ -46,6 +46,6 @@ data = {
 	303:Record(303,(20,21,30),'禁疗',None,'已存在禁疗效果','无法受到治疗',None,'add_control',{'effect':'forbid_cure'}),
 	304:Record(304,(20,21,30),'眩晕',None,'已存在眩晕效果','陷入眩晕中，无法行动',None,'add_control',{'effect':'confusion'}),
 	305:Record(305,(20,30),'龙怒',None,'已存在暴走效果','陷入暴走中，不分敌我目标',None,'add_control',{'effect':'charm'}),
-	1001:Record(1001,(21,25),'寄生种子',None,'已存在寄生种子效果','的寄生种子效果已施加',None,'execute_effect',{'execute_task':'absorb_hp','execute_time':'round_start'}),
-	1002:Record(1002,(21,25),'灼烧',None,'已存在灼烧效果','的灼烧效果已施加',None,'execute_effect',{'execute_task':'damage','execute_time':'round_start'})
+	1001:Record(1001,(20,25),'寄生种子',None,'已存在寄生种子效果','的寄生种子效果已施加',None,'execute_effect',{'execute_task':'absorb_hp','execute_time':'round_start'}),
+	1002:Record(1002,(20,25),'灼烧',None,'已存在灼烧效果','的灼烧效果已施加',None,'execute_effect',{'execute_task':'damage','execute_time':'before_action'})
 }

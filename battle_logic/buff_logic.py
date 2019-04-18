@@ -49,7 +49,7 @@ class BuffLogic(object):
 		else:
 			self.on_add_buff(target, buff_obj)
 
-	def reduce_buff_turn(self, target, turn):
+	def reduce_buff_turn(self, user, target, turn, reason):
 		remove_buff_ids = []
 		for buff_obj in target.iter_buff_obj():
 			if buff_obj.turn <= turn:
@@ -58,9 +58,9 @@ class BuffLogic(object):
 				buff_obj.turn -= turn
 		
 		for buff_id in remove_buff_ids:
-			self.remove_buff_from_target(target, buff_id)
+			self.remove_buff_from_target(user, target, buff_id, reason)
 
-	def remove_buff_from_target(self, target, buff_id):
+	def remove_buff_from_target(self, user, target, buff_id, reason):
 		'''
 			给单个目标删除一个状态
 			Args:
@@ -73,7 +73,7 @@ class BuffLogic(object):
 
 		target.del_buff(buff_id)
 
-		self.on_remove_buff(target, buff_obj)
+		self.on_remove_buff(user, target, buff_obj, reason)
 
 	def on_add_buff_failed(self, target, buff_obj):
 		pass
@@ -84,5 +84,5 @@ class BuffLogic(object):
 	def on_refresh_buff(self, target, buff_obj):
 		pass
 
-	def on_remove_buff(self, target, buff_obj):
+	def on_remove_buff(self, user, target, buff_obj, reason):
 		pass

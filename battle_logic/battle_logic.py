@@ -22,29 +22,13 @@ class BattleLogic(object):
 		self.on_end_battle()
 		self.finish(self.battle_result)
 
-	def create_entity_infos(self):
-		pass
-
 	def battle_start(self):
 		self.current_round = 0
-		self.on_battle_start()
 
 	def battle_prepare(self):
-		self.setup_execute_task()
+		self.setup_skills()
 
 		self.on_event('battle_prepare')
-
-	def setup_execute_task(self):
-		infos = []
-		for _entity in self.iter_undead_entity_infos():
-			infos.append((_entity.get_attr('speed'), _entity.eid, _entity))
-		
-		infos.sort(reverse=True)
-		for _, _, info in infos:
-			info.setup_execute_task()
-
-	def on_battle_start(self):
-		pass
 
 	def next_round(self):
 		if self.is_finish:

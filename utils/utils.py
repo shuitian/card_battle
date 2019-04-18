@@ -102,7 +102,7 @@ def random_card_ability(card):
 	# card.set_defence_level(10)
 	# card.set_speed_level(10)
 
-	# card.set_hp_level(1)
-	# card.set_atk_level(1)
-	# card.set_defence_level(1)
-	# card.set_speed_level(1)
+	card.set_hp_level(1)
+	card.set_atk_level(1)
+	card.set_defence_level(1)
+	card.set_speed_level(1)

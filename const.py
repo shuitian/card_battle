@@ -21,3 +21,7 @@ ATTR_BASE = {
 	'defence' : 100,
 	'speed' : 100,
 }
+
+# 状态消失原因
+REASON_EFFECT = 'effect' # 驱散
+REASON_TIME = 'time' # 回合结束自动消失

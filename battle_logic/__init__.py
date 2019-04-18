@@ -9,6 +9,7 @@ def import_all():
 	from effect_logic import EffectLogic
 	from execute_task import ExecuteTask
 	from skill_logic import SkillLogic
+	from skill_event import SkillEvent
 
 	rets = locals().values()
 	return rets

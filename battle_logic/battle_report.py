@@ -9,7 +9,7 @@ class BattleReport(object):
 		self.skill_step = 0
 		self.report_data = ''
 
-	def on_battle_start(self):
+	def battle_start(self):
 		self.report_data += u'战斗开始！\n'
 		self.report_data += '\n'
 
@@ -131,8 +131,11 @@ class BattleReport(object):
 		if desc:
 			self.report_data += u'\t' * (self.skill_step + 1) + u'【%s】%s\n'%(target.eid, desc)
 
-	def on_remove_buff(self, target, buff_obj):
-		self.report_data += u'【%s】来自【%s】的【%s】效果消失了\n'%(target.eid, buff_obj.eid, buff_obj.buff_data.name)
+	def on_remove_buff(self, user, target, buff_obj, reason):
+		if reason == const.REASON_TIME:
+			self.report_data += u'【%s】来自【%s】的【%s】效果消失了\n'%(target.eid, buff_obj.eid, buff_obj.buff_data.name)
+		elif reason == const.REASON_EFFECT:
+			self.report_data += u'\t' * self.skill_step + u'【%s】驱散了【%s】的【%s】效果\n'%(user.eid, target.eid, buff_obj.buff_data.name)
 
 	def on_pass_action(self, avatar, current_round):
 		self.report_data += u'【%s】无法行动\n'%(avatar.eid)

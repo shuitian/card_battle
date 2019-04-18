@@ -116,10 +116,6 @@ class SkillLogic(object):
 		return dis
 
 	def calc_one_target_effect(self, user, effect, target, execute_info):
-		hit = self.check_hit(user, effect, target)
-		if not hit:
-			self.on_effect_not_hit(user, effect, target)
-			return
 		execute_type, execute_args = execute_info
 		if not execute_type:
 			return
@@ -134,4 +130,12 @@ class SkillLogic(object):
 		return r < hit_rate
 
 	def on_effect_not_hit(self, user, effect, target):
+		pass
+
+	def check_evade(self, user, effect, target):
+		evade_rate = user.get_attr('evade_rate', 0)
+		r = random.random()
+		return r < evade_rate
+
+	def on_damage_be_evade(self, user, effect, target):
 		pass

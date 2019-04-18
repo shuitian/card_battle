@@ -3,16 +3,23 @@
 import data
 import random
 from utils import utils
+from passive_effect import PassiveEffect
 
 class skill(object):
 
 	def __init__(self, skill_id, owner):
+		super(skill, self).__init__()
 		self.skill_id = skill_id
 		self.owner = owner
 		self.skill_data = data.skill[self.skill_id]
 		self.left_round = 0
 
+		if self.passive_args:
+			self.passive_effect = PassiveEffect(self.owner.battle, self.owner, self.passive_args)
+
 	def destroy(self):
+		if self.passive_effect:
+			self.passive_effect.destroy()
 		self.owner = None
 		self.skill_data = None
 
@@ -27,24 +34,19 @@ class AvatarSkillMgr(object):
 	
 	def init(self):
 		self.skills = {}
-		self.execute_tasks = []
-		self.setup_skills()
 
 	def setup_skills(self):
-		# 添加主动技能
+		# 添加默认技能
+		default_skill = self.role_info.default_skill
+		default_skill and self.add_skill(default_skill)
+
+		# 添加技能列表
 		for skill_id in self.role_info.skill_list:
 			self.add_skill(skill_id)
 
 	def add_skill(self, skill_id):
 		_skill = skill(skill_id, self)
-		passive_args = _skill.passive_args
-		if passive_args:
-			self.execute_tasks.append(passive_args)
 		self.skills[skill_id] = _skill
-
-	def setup_execute_task(self):
-		for passive_args in self.execute_tasks:
-			self.battle.add_execute_task(self, self, self, passive_args, None)
 
 	def do_action(self, current_round):
 		if self.have_state('confusion'):

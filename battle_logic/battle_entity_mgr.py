@@ -11,21 +11,6 @@ class BattleEntityMgr(object):
 		self.left_infos = [None]*3
 		self.right_infos = [None]*3
 
-		self.execute_tasks = {} # execute_time : [task_info, task_info]
-
-	def add_execute_task(self, tag, user, target, execute_args, extra_info):
-		execute_time = execute_args.get('execute_time')
-		task_info = tag, user, target, execute_args, extra_info
-		self.execute_tasks.setdefault(execute_time, []).append(task_info)
-
-	def remove_execute_task(self, tag):
-		for task_info_list in self.execute_tasks.itervalues():
-			for task_info in task_info_list[:]:
-				_tag, user, target, execute_args, extra_info = task_info
-				if _tag != tag:
-					continue
-				task_info_list.remove(task_info)
-
 	def get_entity_by_pos(self, pos):
 		return self.pos_infos[pos]
 
@@ -34,14 +19,14 @@ class BattleEntityMgr(object):
 
 	def create_entity_infos(self):
 		entity_infos = self.battle_info.get('entity_infos',{})
-		for eid, entity_info in entity_infos.iteritems():
-			self.create_entity_info(eid, entity_info)
+		for eid, attrs in entity_infos.iteritems():
+			self.create_entity_info(eid, attrs)
 
 		self.left_infos = self.pos_infos[:3]
 		self.right_infos = self.pos_infos[3:]
 
-	def create_entity_info(self, eid, entity_info):
-		_avatar = avatar.AvatarInfo(self, eid, entity_info)
+	def create_entity_info(self, eid, attrs):
+		_avatar = avatar.AvatarInfo(self, eid, attrs)
 		self.entity_infos[_avatar.eid] = _avatar
 		self.pos_infos[_avatar.get_attr('pos')] = _avatar
 
@@ -54,21 +39,11 @@ class BattleEntityMgr(object):
 			self.on_action(_entity)
 			_entity = self.get_next_action_entity(current_round)
 
-	def on_event(self, event_name):
-		func = getattr(self, 'on_event_%s'%event_name, None)
-		func and func()
-		task_list = self.execute_tasks.get(event_name, [])
-		for task_info in task_list:
-			tag, user, target, execute_args, extra_info = task_info
-			execute_task = execute_args.get('execute_task')
-			func = getattr(self, 'execute_task_%s'%execute_task)
-			func(user, target, execute_args, extra_info)
-
 	def on_start_action(self, avatar):
-		pass
+		self.on_event('before_action', avatar)
 
 	def on_action(self, avatar):
-		self.reduce_buff_turn(avatar, 1)
+		self.reduce_buff_turn(avatar, avatar, 1, const.REASON_TIME)
 
 	def get_next_action_entity(self, current_round):
 		infos = []
@@ -104,3 +79,12 @@ class BattleEntityMgr(object):
 		if self.right_infos[-1].dead:
 			self.winner = const.WINNER_LEFT
 			return True
+	
+	def setup_skills(self):
+		infos = []
+		for _entity in self.iter_undead_entity_infos():
+			infos.append((_entity.get_attr('speed'), _entity.eid, _entity))
+		
+		infos.sort(reverse=True)
+		for _, _, info in infos:
+			info.setup_skills()

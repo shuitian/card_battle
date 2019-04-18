@@ -12,6 +12,8 @@ class DamageLogic(object):
 
 		self.apply_damage(damage_struct)
 		cure_struct = battle_common.CureStruct(user, user, damage_struct.get_real_value(), extra_info)
+		if user.have_state('forbid_cure'):
+			cure_struct.set_rate('forbid_cure', 0)
 		self.apply_cure(cure_struct)
 
 	# 持续伤害
@@ -24,7 +26,8 @@ class DamageLogic(object):
 	# 持续治疗
 	def create_hot(self, user, target, value, extra_info=None):
 		cure_struct = self.create_cure_struct(user, target, value, extra_info)
-
+		if target.have_state('forbid_cure'):
+			cure_struct.set_rate('forbid_cure', 0)
 		self.apply_cure(cure_struct)
 		return cure_struct
 
@@ -90,6 +93,8 @@ class DamageLogic(object):
 		target = cure_struct.target
 		cure_struct.set_rate('cure_add_rate', user.get_attr('cure_add_rate', 1))
 		cure_struct.set_rate('be_cure_add_rate', target.get_attr('be_cure_add_rate', 1))
+		if target.have_state('forbid_cure'):
+			cure_struct.set_rate('forbid_cure', 0)
 		return cure_struct
 
 	def apply_cure(self, cure_struct):

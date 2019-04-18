@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 
+import const
 import random
 from utils import utils
 
@@ -15,6 +16,11 @@ class EffectLogic(object):
 		self.add_buff_to_target(user, target, buff_id, turn, value)
 
 	def execute_type_damage(self, user, effect, target, execute_args):
+		hit = self.check_hit(user, effect, target)
+		if not hit:
+			self.on_effect_not_hit(user, effect, target)
+			return
+
 		be_evade = self.check_evade(user, effect, target)
 		if be_evade:
 			self.on_damage_be_evade(user, effect, target)
@@ -61,10 +67,19 @@ class EffectLogic(object):
 
 		self.add_buff_to_target(user, target, buff_id, turn, user_property)
 
-	def check_evade(self, user, effect, target):
-		evade_rate = user.get_attr('evade_rate', 0)
-		r = random.random()
-		return r < evade_rate
+	def execute_type_remove_buff(self, user, effect, target, execute_args):
+		buff_tag = int(execute_args.get('buff_tag'))
+		buff_number = int(execute_args.get('buff_number', 0))
 
-	def on_damage_be_evade(self, user, effect, target):
-		pass
+
+		buff_ids = target.get_buff_ids_by_tag(buff_tag)
+		if not buff_ids:
+			return
+
+		number = len(buff_ids)
+		if buff_number:
+			number = min(buff_number, number)
+
+		del_buff_ids = random.sample(buff_ids, number)
+		for buff_id in del_buff_ids:
+			self.remove_buff_from_target(user, target, buff_id, const.REASON_EFFECT)

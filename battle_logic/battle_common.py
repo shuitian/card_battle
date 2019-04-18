@@ -3,6 +3,18 @@
 import data
 import random
 
+skill_event_list = (
+
+'BATTLE_PREPARE', # 战斗准备
+'ROUND_START', # 回合开始
+'BEFORE_ACTION', # 行动前
+
+)
+
+for key in skill_event_list:
+ 	locals()[key] = key.lower()
+
+
 class SkillStruct(object):
 	"""技能释放结构"""
 	def __init__(self, user, skill_id):
@@ -64,6 +76,8 @@ class HpStruct(object):
 			return 0
 
 		for rate in self.rates.itervalues():
+			if rate == 0:
+				return 0
 			value = value * rate
 
 		return max(int(round(value)), 1)

@@ -11,7 +11,7 @@ def test():
 	from utils import utils
 
 	key_data = (3,2,1,1,2,6,3,2,4)
-	key_data = (3,None,None,None,None,6)
+	key_data = (1,None,None,None,None,4,6,5,4)
 	cards = []
 	for x in xrange(6):
 		# card_id = random.choice(data.card_info.keys())

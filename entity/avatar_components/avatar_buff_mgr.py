@@ -2,18 +2,20 @@
 
 import data
 from utils import utils
-
+from passive_effect import BuffPassiveEffect
 class buff_obj(object):
 	"""单个buff对象"""
 
-	def __init__(self, buff_id, turn, eid, extra_info = None):
+	def __init__(self, owner, buff_id, turn, eid, extra_info = None):
 		super(buff_obj, self).__init__()
+		self.owner = owner
 		self.buff_id = buff_id # 状态ID
 		self.turn = turn # 状态回合数
 		self.eid = eid # 施法者eid
 		self.extra_info = extra_info or {}
 		self.user_property = 0 # 施法者参数
 		self.buff_data = data.buff[self.buff_id]
+		self.passive_effect = None
 		self.deal_extra_info()
 
 	def deal_extra_info(self):
@@ -32,6 +34,17 @@ class buff_obj(object):
 		self.extra_info.update(new_buff_obj.extra_info)
 		if 'user_property' in self.extra_info:
 			self.extra_info['user_property'] = self.user_property
+
+	def setup_execute_task(self):
+		if self.passive_effect:
+			self.passive_effect.destroy()
+		value = utils.get_buff_change_attr_value(self)[1]
+		self.passive_effect = BuffPassiveEffect(self.owner.battle, self.owner, self.buff_data.special_effect_args, self, value)
+
+	def destroy(self):
+		if self.passive_effect:
+			self.passive_effect.destroy()
+		self.owner = None
 
 class AvatarBuffMgr(object):
 	"""战斗角色状态管理"""
@@ -52,7 +65,7 @@ class AvatarBuffMgr(object):
 		return buff_obj.buff_data.buff_refresh and buff_obj.user_property < user_property
 
 	def add_buff(self, buff_id, turn, eid, extra_info):
-		add_buff_obj = buff_obj(buff_id, turn, eid, extra_info)
+		add_buff_obj = buff_obj(self, buff_id, turn, eid, extra_info)
 		_buff_obj = self.find_buff_obj(buff_id)
 		if _buff_obj:
 			_buff_obj.merge_buff(add_buff_obj)
@@ -92,9 +105,7 @@ class AvatarBuffMgr(object):
 		self.states.setdefault(effect_name, []).append(buff_obj)
 
 	def special_effect_execute_effect(self, buff_obj):
-		user = self.battle.get_entity(buff_obj.eid)
-		extra_info = {'value': utils.get_buff_change_attr_value(buff_obj)[1],'buff_obj':buff_obj}
-		self.battle.add_execute_task(buff_obj, user, self, buff_obj.buff_data.special_effect_args, extra_info)
+		buff_obj.setup_execute_task()
 
 	def del_buff(self, buff_id):
 		buff_obj = self.buffs.pop(buff_id)
@@ -108,10 +119,14 @@ class AvatarBuffMgr(object):
 		if effect_name and effect_name in self.states:
 			self.states[effect_name].remove(buff_obj)
 
-		self.battle.remove_execute_task(buff_obj)
+		buff_obj.destroy()
 
 	def have_state(self, state_name):
 		return self.states.get(state_name, None)
 
-	def before_action(self):
-		pass
+	def get_buff_ids_by_tag(self, tag):
+		buff_ids = []
+		for buff_id, buff_obj in self.buffs.iteritems():
+			if tag in buff_obj.buff_data.buff_tags:
+				buff_ids.append(buff_id)
+		return buff_ids
