@@ -119,6 +119,10 @@ class SkillLogic(object):
 		execute_type, execute_args = execute_info
 		if not execute_type:
 			return
+		execute_prob = float(execute_args.get('execute_prob',1))
+		r = random.random()
+		if r > execute_prob:
+			return
 		func = getattr(self, 'execute_type_%s'%execute_type)
 		func(user, effect, target, execute_args)
 

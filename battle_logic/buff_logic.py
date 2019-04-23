@@ -3,6 +3,13 @@
 class BuffLogic(object):
 	"""状态相关代码"""
 
+	def add_buff_user_property(self, user, target, buff_id, turn, user_property):
+		'''增加一个状态的施法者参数'''
+		buff_obj = target.find_buff_obj(buff_id)
+		if buff_obj:
+			user_property = buff_obj.user_property + user_property
+		self.add_buff_to_target(user, target, buff_id, turn, user_property)
+
 	def add_buff_to_target(self, user, target, buff_id, turn, user_property=None):
 		'''
 			给单个目标增加一个状态

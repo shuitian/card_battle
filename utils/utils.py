@@ -21,7 +21,7 @@ def _get_buff_desc(user, buff_obj, desc):
 	desc = desc.replace('$value$', str(value))
 
 	value *= 100
-	if float(int(value)) == value:
+	if float(int(value)) == float(value):
 		value = int(value)
 	desc = desc.replace('%value', str(value))
 

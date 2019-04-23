@@ -83,3 +83,11 @@ class EffectLogic(object):
 		del_buff_ids = random.sample(buff_ids, number)
 		for buff_id in del_buff_ids:
 			self.remove_buff_from_target(user, target, buff_id, const.REASON_EFFECT)
+
+	def execute_type_add_buff_user_property(self, user, effect, target, execute_args):
+		buff_id = int(execute_args.get('buff_id'))
+		turn = int(execute_args.get('turn', 1))
+
+		value = utils.get_value_by_execute_args(execute_args, user, target)
+		
+		self.add_buff_user_property(user, target, buff_id, turn, value)

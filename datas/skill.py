@@ -33,11 +33,13 @@ data = {
 	1008:Record(1008,'头槌',0.4,1,(1008,),None,{}),
 	1009:Record(1009,'火箭头槌',0.45,1,(1009,),None,{}),
 	1010:Record(1010,'高速旋转',0.25,0,(1010,101001),None,{}),
+	1011:Record(1011,'变硬',0.4,0,(1011,),None,{}),
 	2001:Record(2001,'藤鞭',0.5,0,(2001,),None,{}),
 	2002:Record(2002,'飞叶快刀',0.35,1,(2002,),None,{}),
 	2003:Record(2003,'日光术',0.4,1,(2003,200301),None,{}),
 	2004:Record(2004,'寄生种子',None,None,(2004,),1,{'execute_id':'2004','execute_task':'execute_skill','execute_time':'battle_prepare'}),
 	2005:Record(2005,'花瓣舞',0.35,1,(2005,200501,200502),None,{}),
+	2006:Record(2006,'麻痹粉',0.35,1,(2006,),None,{}),
 	3001:Record(3001,'火花',0.45,0,(3001,),None,{}),
 	3002:Record(3002,'喷射火焰',0.35,1,(3002,),None,{}),
 	4001:Record(4001,'泡沫',0.35,0,(4001,),None,{}),
@@ -49,5 +51,8 @@ data = {
 	6001:Record(6001,'龙怒',None,None,(6001,600101),1,{'execute_id':'6001','execute_task':'execute_skill','execute_time':'battle_prepare'}),
 	6002:Record(6002,'龙威',None,None,(6002,),1,{'execute_id':'6002','execute_task':'execute_skill','execute_time':'battle_prepare'}),
 	7001:Record(7001,'翅膀攻击',0.3,0,(7001,),None,{}),
-	8001:Record(8001,'地球上投',0.5,3,(8001,800101),None,{})
+	8001:Record(8001,'地球上投',0.5,3,(8001,800101),None,{}),
+	9001:Record(9001,'吐丝',0.5,0,(9001,),None,{}),
+	9002:Record(9002,'虫咬',0.35,0,(9002,),None,{}),
+	10001:Record(10001,'滚动',0.35,0,(10001,),None,{})
 }
