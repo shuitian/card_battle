@@ -51,8 +51,12 @@ data = {
 	6001:Record(6001,'龙怒',None,None,(6001,600101),1,{'execute_id':'6001','execute_task':'execute_skill','execute_time':'battle_prepare'}),
 	6002:Record(6002,'龙威',None,None,(6002,),1,{'execute_id':'6002','execute_task':'execute_skill','execute_time':'battle_prepare'}),
 	7001:Record(7001,'翅膀攻击',0.3,0,(7001,),None,{}),
+	7002:Record(7002,'顺风',0.4,0,(7002,),None,{}),
 	8001:Record(8001,'地球上投',0.5,3,(8001,800101),None,{}),
 	9001:Record(9001,'吐丝',0.5,0,(9001,),None,{}),
 	9002:Record(9002,'虫咬',0.35,0,(9002,),None,{}),
-	10001:Record(10001,'滚动',0.35,0,(10001,),None,{})
+	9003:Record(9003,'蝶舞',None,None,(9003,900301),1,{'execute_id':'9003','execute_task':'execute_skill','execute_time':'round_start'}),
+	9004:Record(9004,'银色旋风',0.3,0,(9004,900401),None,{}),
+	10001:Record(10001,'滚动',0.35,0,(10001,),None,{}),
+	11001:Record(11001,'幻想光线',0.4,1,(11001,),None,{})
 }

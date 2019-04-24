@@ -41,7 +41,7 @@ class AvatarSkillMgr(object):
 		default_skill and self.add_skill(default_skill)
 
 		# 添加技能列表
-		for skill_id in self.role_info.skill_list:
+		for skill_id in self.role_info.skill_list or []:
 			self.add_skill(skill_id)
 
 	def add_skill(self, skill_id):
